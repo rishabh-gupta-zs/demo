@@ -1,6 +1,6 @@
 package com.zs.assignment1;
 import java.io.File;
-public class Main {
+public class SystemInfo {
     public static void main(String[] args) {
         System.out.println("Name of current user - "+System.getProperty("user.name"));
         System.out.println("Home directory of current user - "+System.getProperty("user.home"));
