@@ -1,13 +1,13 @@
 package com.zs.assignment4;
 
-import com.zs.assignment4.LRUcache.Cache;
+import com.zs.assignment4.LRUcache.CacheController;
 
 import java.util.Scanner;
 
 public class HierarchyController {
     Scanner scanner =new Scanner(System.in);
     HierarchyNode rootNode=new HierarchyNode("Flipkart");
-    Cache cache=new Cache(4);
+    CacheController cacheController =new CacheController(4);
     HierarchyServices hierarchyServices =new HierarchyServices();
 
     public void showMenu(){
@@ -28,12 +28,12 @@ public class HierarchyController {
                     System.out.println("Enter Category to search");
                     scanner.nextLine();
                     String toSearch= scanner.nextLine();
-                    HierarchyNode cacheResult=cache.get(toSearch);
+                    HierarchyNode cacheResult= cacheController.get(toSearch);
                     if(cacheResult.categoryName.equals("")){
                         HierarchyNode cacheResponse= hierarchyServices.searchInHierarchy(rootNode,toSearch);
                         if(!cacheResponse.categoryName.equals("")){
                             hierarchyServices.showpath(cacheResponse);
-                            cache.set(toSearch,cacheResponse);
+                            cacheController.set(toSearch,cacheResponse);
                         }
                         else {
                             System.out.println(toSearch+" not found");
@@ -79,7 +79,7 @@ public class HierarchyController {
                     HierarchyNode newHierarchyNode=new HierarchyNode(toAdd);
                     root.childrens.add(newHierarchyNode);
                     newHierarchyNode.pre =root;
-                    cache.set(toAdd,newHierarchyNode);
+                    cacheController.set(toAdd,newHierarchyNode);
                     System.out.println(toAdd+" added to "+root.categoryName +" Successfully");
                     return true;
                 } else if (input>=0 && input<childSize) {

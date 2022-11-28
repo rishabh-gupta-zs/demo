@@ -4,11 +4,11 @@ import com.zs.assignment4.HierarchyNode;
 
 import java.util.HashMap;
 
-public class Cache {
+public class CacheController {
     public HashMap<String, LRUNode> map;
     public int capacity, count;
     public LRUNode head, tail;
-    public Cache(int capacity)
+    public CacheController(int capacity)
     {
         this.capacity = capacity;
         map = new HashMap<>();
