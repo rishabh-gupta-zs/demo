@@ -3,7 +3,7 @@ package com.zs.assignment3;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class EcommerceServices {
+public class EcommerceService {
     public ArrayList<Snacks> snacks=new ArrayList<>();
     public ArrayList<Mobiles> mobiles=new ArrayList<>();
     public ArrayList<WashingMachine> washingMachines=new ArrayList<>();
@@ -54,7 +54,7 @@ public class EcommerceServices {
         System.out.println(name+" added successfully");
     }
 
-    public void addWashMachine(){
+    public void addWashingMachine(){
         System.out.println("Adding new Washing Machine. Please provide following data");
         scanner.nextLine();
         System.out.println("Name");

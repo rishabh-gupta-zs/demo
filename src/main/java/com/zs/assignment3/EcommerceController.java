@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class EcommerceController {
 
     Scanner scanner =new Scanner(System.in);
-    EcommerceServices ecommerceServices =new EcommerceServices();
+    EcommerceService ecommerceService =new EcommerceService();
 
-    public void showMenu(){
-        ecommerceServices.addInitialProducts();
+    public void start(){
+        ecommerceService.addInitialProducts();
         System.out.println("Choose an option");
         int input;
         do{
@@ -25,7 +25,7 @@ public class EcommerceController {
                     System.out.println("Ending task");
                     break;
                 default:
-                    System.out.println("Invalid input");
+                    System.out.println("Invalid selection");
                     break;
             }
         }while ( input!=-1 );
@@ -39,21 +39,20 @@ public class EcommerceController {
             input= scanner.nextInt();
             switch (input){
                 case 1:
-                    ecommerceServices.addMobile();
+                    ecommerceService.addMobile();
                     break;
                 case 2:
-                    ecommerceServices.addWashMachine();
+                    ecommerceService.addWashingMachine();
                     break;
                 case 3:
-                    ecommerceServices.addSnacks();
+                    ecommerceService.addSnacks();
                     break;
                 case -1:
                     break;
                 default:
-                    System.out.println("Invalid Input");
+                    System.out.println("Invalid selecion");
                     break;
             }
-
         }while (input!=-1);
     }
     public void showProducts(){
@@ -67,27 +66,27 @@ public class EcommerceController {
                     showMobiles();
                     break;
                 case 2:
-                    showWashMachine();
+                    showWashingMachine();
                     break;
                 case 3:
                     showSnacks();
                     break;
                 case 4:
                     showMobiles();
-                    showWashMachine();
+                    showWashingMachine();
                     showSnacks();
                     break;
                 case -1:
                     break;
                 default:
-                    System.out.println("Invalid input");
+                    System.out.println("Invalid selection");
             }
         }while (input!=-1);
     }
 
     public void showSnacks(){
         System.out.println("--- Snacks ---");
-        for(Snacks snack: ecommerceServices.snacks){
+        for(Snacks snack: ecommerceService.snacks){
             System.out.print("\tName\t-\t");
             System.out.println(snack.name);
             System.out.print("\tProduct id\t-\t");
@@ -100,26 +99,26 @@ public class EcommerceController {
         }
     }
 
-    public void showWashMachine(){
+    public void showWashingMachine(){
         System.out.println("--- Washing Machine ---");
-        for(WashingMachine washMachine: ecommerceServices.washingMachines){
+        for(WashingMachine washingMachine: ecommerceService.washingMachines){
             System.out.print("\tName\t-\t");
-            System.out.println(washMachine.name+"\t\t");
+            System.out.println(washingMachine.name+"\t\t");
             System.out.print("\tProduct id\t-\t");
-            System.out.println(washMachine.productID+"\t\t");
+            System.out.println(washingMachine.productID+"\t\t");
             System.out.print("\tPrice\t-\t");
-            System.out.println(washMachine.price+"\t\t");
+            System.out.println(washingMachine.price+"\t\t");
             System.out.print("\tDescription\t-\t");
-            System.out.println(washMachine.description+"\t\t");
+            System.out.println(washingMachine.description+"\t\t");
             System.out.print("\tRPM\t-\t");
-            System.out.println(washMachine.rpm);
+            System.out.println(washingMachine.rpm);
             System.out.println("\t-----*----");
         }
     }
 
     public void showMobiles(){
         System.out.println("--- Mobiles ---");
-        for(Mobiles mobile: ecommerceServices.mobiles){
+        for(Mobiles mobile: ecommerceService.mobiles){
             System.out.print("\tName\t-\t");
             System.out.println(mobile.name);
             System.out.print("\tProduct id\t-\t");
