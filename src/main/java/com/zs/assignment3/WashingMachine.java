@@ -7,6 +7,4 @@ public class WashingMachine extends Electronics{
         super(name, productID, price,description);
         this.rpm=rpm;
     }
-
-
 }
