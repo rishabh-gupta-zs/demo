@@ -1,6 +1,6 @@
 package com.zs.assignment4;
 
-import com.zs.assignment4.LRUcache.CacheController;
+import com.zs.assignment4.lrucache.CacheController;
 
 import java.util.Scanner;
 

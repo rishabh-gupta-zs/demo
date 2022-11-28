@@ -1,4 +1,4 @@
-package com.zs.assignment4.LRUcache;
+package com.zs.assignment4.lrucache;
 
 import com.zs.assignment4.HierarchyNode;
 
