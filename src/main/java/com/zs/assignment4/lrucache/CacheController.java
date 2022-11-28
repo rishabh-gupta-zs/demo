@@ -41,8 +41,8 @@ public class CacheController {
             addToHead(node);
             return result;
         }
-        HierarchyNode blank=new HierarchyNode("");
-        return blank;
+//        HierarchyNode blank=new HierarchyNode("");
+        return null;
     }
     public void set(String key, HierarchyNode val)
     {

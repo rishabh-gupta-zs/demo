@@ -29,7 +29,7 @@ public class HierarchyController {
                     scanner.nextLine();
                     String toSearch= scanner.nextLine();
                     HierarchyNode cacheResult= cacheController.get(toSearch);
-                    if(cacheResult.categoryName.equals("")){
+                    if(cacheResult==null){
                         HierarchyNode cacheResponse= hierarchyServices.searchInHierarchy(rootNode,toSearch);
                         if(!cacheResponse.categoryName.equals("")){
                             hierarchyServices.showpath(cacheResponse);
