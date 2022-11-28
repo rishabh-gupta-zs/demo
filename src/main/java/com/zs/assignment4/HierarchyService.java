@@ -1,12 +1,12 @@
 package com.zs.assignment4;
 
-public class HierarchyServices {
+public class HierarchyService {
     public HierarchyNode searchInHierarchy(HierarchyNode root,String toSearch){
             if(root.categoryName.equals(toSearch)){
                 return root;
             }
             else{
-                for (HierarchyNode hierarchyNode:root.childrens){
+                for (HierarchyNode hierarchyNode:root.children){
                     HierarchyNode res=searchInHierarchy(hierarchyNode,toSearch);
                     if(!res.categoryName.equals(""))
                         return res;
@@ -15,12 +15,12 @@ public class HierarchyServices {
             return new HierarchyNode("");
     }
     public void printHierarchy(HierarchyNode root){
-        if(root.childrens.size()>0){
+        if(root.children.size()>0){
             System.out.println(root.categoryName);
-            for (HierarchyNode hierarchyNode:root.childrens) {
+            for (HierarchyNode hierarchyNode:root.children) {
                 System.out.println("\t "+hierarchyNode.categoryName);
             }
-            for (HierarchyNode hierarchyNode:root.childrens) {
+            for (HierarchyNode hierarchyNode:root.children) {
                 printHierarchy(hierarchyNode);
             }
         }
@@ -41,13 +41,13 @@ public class HierarchyServices {
         HierarchyNode c13=new HierarchyNode("Home Appliences");
         HierarchyNode c111=new HierarchyNode("SmartPhone");
         HierarchyNode c21=new HierarchyNode("food items");
-        root.childrens.add(c1);
-        root.childrens.add(c2);
-        c1.childrens.add(c11);
-        c1.childrens.add(c12);
-        c1.childrens.add(c13);
-        c11.childrens.add(c111);
-        c2.childrens.add(c21);
+        root.children.add(c1);
+        root.children.add(c2);
+        c1.children.add(c11);
+        c1.children.add(c12);
+        c1.children.add(c13);
+        c11.children.add(c111);
+        c2.children.add(c21);
         c111.pre =c11;
         c11.pre =c1;
         c12.pre =c1;

@@ -8,10 +8,10 @@ public class HierarchyController {
     Scanner scanner =new Scanner(System.in);
     HierarchyNode rootNode=new HierarchyNode("Flipkart");
     CacheController cacheController =new CacheController(4);
-    HierarchyServices hierarchyServices =new HierarchyServices();
+    HierarchyService hierarchyService =new HierarchyService();
 
     public void showMenu(){
-        hierarchyServices.makeInitialHierarchy(rootNode);
+        hierarchyService.makeInitialHierarchy(rootNode);
         int input;
         do{
             System.out.println("1.  Add Category to hierarchy");
@@ -21,7 +21,7 @@ public class HierarchyController {
             input= scanner.nextInt();
             switch (input){
                 case 1:
-                    addtoHierarchy(rootNode);
+                    addToHierarchy(rootNode);
                     break;
 
                 case 2:
@@ -30,9 +30,9 @@ public class HierarchyController {
                     String toSearch= scanner.nextLine();
                     HierarchyNode cacheResult= cacheController.get(toSearch);
                     if(cacheResult==null){
-                        HierarchyNode cacheResponse= hierarchyServices.searchInHierarchy(rootNode,toSearch);
+                        HierarchyNode cacheResponse= hierarchyService.searchInHierarchy(rootNode,toSearch);
                         if(!cacheResponse.categoryName.equals("")){
-                            hierarchyServices.showpath(cacheResponse);
+                            hierarchyService.showpath(cacheResponse);
                             cacheController.set(toSearch,cacheResponse);
                         }
                         else {
@@ -40,12 +40,12 @@ public class HierarchyController {
                         }
                     }
                     else{
-                        hierarchyServices.showpath(cacheResult);
+                        hierarchyService.showpath(cacheResult);
                     }
                     break;
 
                 case 3:
-                    hierarchyServices.printHierarchy(rootNode);
+                    hierarchyService.printHierarchy(rootNode);
                     System.out.println("Enter any number to go back");
                     scanner.nextInt();
                     break;
@@ -55,35 +55,35 @@ public class HierarchyController {
                     break;
 
                 default:
-                    System.out.println("Invalid input");
+                    System.out.println("Invalid selection");
             }
         }while (input!=-1);
     }
-    public boolean addtoHierarchy(HierarchyNode root){
+    public boolean addToHierarchy(HierarchyNode root){
 
             System.out.println("-------"+root.categoryName +"--------");
-            int childSize=root.childrens.size();
-            if(root.childrens.size()!=0){
-                for(int i=0;i<childSize;i++)
-                    System.out.println(i+". >> "+root.childrens.get(i).categoryName);
+            int numberOfChild=root.children.size();
+            if(root.children.size()!=0){
+                for(int i=0;i<numberOfChild;i++)
+                    System.out.println(i+". >> "+root.children.get(i).categoryName);
             }
-            System.out.println(childSize+". + ");
+            System.out.println(numberOfChild+". + ");
             System.out.println("Any other Number to Terminate action");
             int input;
             while(true){
                 input= scanner.nextInt();
-                if(input==childSize){
+                if(input==numberOfChild){
                     System.out.println("Enter subcategory");
                     scanner.nextLine();
                     String toAdd= scanner.nextLine();
                     HierarchyNode newHierarchyNode=new HierarchyNode(toAdd);
-                    root.childrens.add(newHierarchyNode);
+                    root.children.add(newHierarchyNode);
                     newHierarchyNode.pre =root;
                     cacheController.set(toAdd,newHierarchyNode);
                     System.out.println(toAdd+" added to "+root.categoryName +" Successfully");
                     return true;
-                } else if (input>=0 && input<childSize) {
-                    if(addtoHierarchy(root.childrens.get(input))){
+                } else if (input>=0 && input<numberOfChild) {
+                    if(addToHierarchy(root.children.get(input))){
                         return true;
                     }
                 }
