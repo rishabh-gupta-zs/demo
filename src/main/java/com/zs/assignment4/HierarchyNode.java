@@ -3,11 +3,11 @@ package com.zs.assignment4;
 import java.util.ArrayList;
 
 public class HierarchyNode {
-    public String data;
+    public String categoryName;
     ArrayList<HierarchyNode> childrens;
-    HierarchyNode prev;
+    HierarchyNode pre;
     public HierarchyNode(String data){
-        this.data=data;
+        this.categoryName =data;
         childrens=new ArrayList<>();
     }
 }

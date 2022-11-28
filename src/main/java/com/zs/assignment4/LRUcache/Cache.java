@@ -5,11 +5,9 @@ import com.zs.assignment4.HierarchyNode;
 import java.util.HashMap;
 
 public class Cache {
-
     public HashMap<String, LRUNode> map;
     public int capacity, count;
     public LRUNode head, tail;
-
     public Cache(int capacity)
     {
         this.capacity = capacity;
@@ -22,13 +20,11 @@ public class Cache {
         tail.next = null;
         count = 0;
     }
-
     public void deleteNode(LRUNode node)
     {
         node.pre.next = node.next;
         node.next.pre = node.pre;
     }
-
     public void addToHead(LRUNode node)
     {
         node.next = head.next;

@@ -5,82 +5,85 @@ import com.zs.assignment4.LRUcache.Cache;
 import java.util.Scanner;
 
 public class HierarchyController {
-    Scanner sc=new Scanner(System.in);
+    Scanner scanner =new Scanner(System.in);
     HierarchyNode rootNode=new HierarchyNode("Flipkart");
     Cache cache=new Cache(4);
-    HierarchyServices hrsrv=new HierarchyServices();
+    HierarchyServices hierarchyServices =new HierarchyServices();
 
     public void showMenu(){
-        hrsrv.makeInitialHierarchy(rootNode);
-        int x;
+        hierarchyServices.makeInitialHierarchy(rootNode);
+        int input;
         do{
             System.out.println("1.  Add Category to hierarchy");
             System.out.println("2.  Search in hierarchy");
             System.out.println("3.  Show hierarchy");
             System.out.println("-1. Exit");
-            x=sc.nextInt();
-            switch (x){
+            input= scanner.nextInt();
+            switch (input){
                 case 1:
                     addtoHierarchy(rootNode);
                     break;
+
                 case 2:
                     System.out.println("Enter Category to search");
-                    sc.nextLine();
-                    String str=sc.nextLine();
-                    HierarchyNode cacheResult=cache.get(str);
-                    if(cacheResult.data.equals("")){
-                        HierarchyNode res=hrsrv.searchInHierarchy(rootNode,str);
-                        if(!res.data.equals("")){
-                            hrsrv.showpath(res);
-                            cache.set(str,res);
+                    scanner.nextLine();
+                    String toSearch= scanner.nextLine();
+                    HierarchyNode cacheResult=cache.get(toSearch);
+                    if(cacheResult.categoryName.equals("")){
+                        HierarchyNode cacheResponse= hierarchyServices.searchInHierarchy(rootNode,toSearch);
+                        if(!cacheResponse.categoryName.equals("")){
+                            hierarchyServices.showpath(cacheResponse);
+                            cache.set(toSearch,cacheResponse);
                         }
                         else {
-                            System.out.println(str+" not found");
+                            System.out.println(toSearch+" not found");
                         }
                     }
                     else{
-                        hrsrv.showpath(cacheResult);
+                        hierarchyServices.showpath(cacheResult);
                     }
+                    break;
 
-                    break;
                 case 3:
-                    hrsrv.printHierarchy(rootNode);
+                    hierarchyServices.printHierarchy(rootNode);
                     System.out.println("Enter any number to go back");
-                    sc.nextInt();
+                    scanner.nextInt();
                     break;
+
                 case -1:
                     System.out.println("End");
                     break;
+
                 default:
                     System.out.println("Invalid input");
             }
-        }while (x!=-1);
+        }while (input!=-1);
     }
     public boolean addtoHierarchy(HierarchyNode root){
 
-            System.out.println("-------"+root.data+"--------");
-            int childsize=root.childrens.size();
+            System.out.println("-------"+root.categoryName +"--------");
+            int childSize=root.childrens.size();
             if(root.childrens.size()!=0){
-                for(int i=0;i<childsize;i++)
-                    System.out.println(i+". >> "+root.childrens.get(i).data);
+                for(int i=0;i<childSize;i++)
+                    System.out.println(i+". >> "+root.childrens.get(i).categoryName);
             }
-            System.out.println(childsize+". + ");
+            System.out.println(childSize+". + ");
             System.out.println("Any other Number to Terminate action");
-            int t;
+            int input;
             while(true){
-                t= sc.nextInt();
-                if(t==childsize){
+                input= scanner.nextInt();
+                if(input==childSize){
                     System.out.println("Enter subcategory");
-                    sc.nextLine();
-                    String str=sc.nextLine();
-                    HierarchyNode ch=new HierarchyNode(str);
-                    root.childrens.add(ch);
-                    ch.prev=root;
-                    cache.set(str,ch);
-                    System.out.println(str+" added to "+root.data+" Successfully");
+                    scanner.nextLine();
+                    String toAdd= scanner.nextLine();
+                    HierarchyNode newHierarchyNode=new HierarchyNode(toAdd);
+                    root.childrens.add(newHierarchyNode);
+                    newHierarchyNode.pre =root;
+                    cache.set(toAdd,newHierarchyNode);
+                    System.out.println(toAdd+" added to "+root.categoryName +" Successfully");
                     return true;
-                } else if (t>=0 && t<childsize) {
-                    if(addtoHierarchy(root.childrens.get(t))){
+                } else if (input>=0 && input<childSize) {
+                    if(addtoHierarchy(root.childrens.get(input))){
                         return true;
                     }
                 }
@@ -88,8 +91,5 @@ public class HierarchyController {
                     System.out.println("invalid input");
                 }
             }
-
     }
-
-
 }

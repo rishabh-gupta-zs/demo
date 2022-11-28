@@ -1,14 +1,14 @@
 package com.zs.assignment4;
 
 public class HierarchyServices {
-    public HierarchyNode searchInHierarchy(HierarchyNode root,String str){
-            if(root.data.equals(str)){
+    public HierarchyNode searchInHierarchy(HierarchyNode root,String toSearch){
+            if(root.categoryName.equals(toSearch)){
                 return root;
             }
             else{
-                for (HierarchyNode n:root.childrens){
-                    HierarchyNode res=searchInHierarchy(n,str);
-                    if(!res.data.equals(""))
+                for (HierarchyNode hierarchyNode:root.childrens){
+                    HierarchyNode res=searchInHierarchy(hierarchyNode,toSearch);
+                    if(!res.categoryName.equals(""))
                         return res;
                 }
             }
@@ -16,20 +16,20 @@ public class HierarchyServices {
     }
     public void printHierarchy(HierarchyNode root){
         if(root.childrens.size()>0){
-            System.out.println(root.data);
-            for (HierarchyNode n:root.childrens) {
-                System.out.println("\t "+n.data);
+            System.out.println(root.categoryName);
+            for (HierarchyNode hierarchyNode:root.childrens) {
+                System.out.println("\t "+hierarchyNode.categoryName);
             }
-            for (HierarchyNode n:root.childrens) {
-                printHierarchy(n);
+            for (HierarchyNode hierarchyNode:root.childrens) {
+                printHierarchy(hierarchyNode);
             }
         }
     }
     public void showpath(HierarchyNode root){
-        System.out.print(root.data);
-        while (!root.data.equals("Flipkart")){
-            root=root.prev;
-            System.out.print(" << "+root.data);
+        System.out.print(root.categoryName);
+        while (!root.categoryName.equals("Flipkart")){
+            root=root.pre;
+            System.out.print(" << "+root.categoryName);
         }
         System.out.println();
     }
@@ -48,12 +48,12 @@ public class HierarchyServices {
         c1.childrens.add(c13);
         c11.childrens.add(c111);
         c2.childrens.add(c21);
-        c111.prev=c11;
-        c11.prev=c1;
-        c12.prev=c1;
-        c13.prev=c1;
-        c21.prev=c2;
-        c1.prev=root;
-        c2.prev=root;
+        c111.pre =c11;
+        c11.pre =c1;
+        c12.pre =c1;
+        c13.pre =c1;
+        c21.pre =c2;
+        c1.pre =root;
+        c2.pre =root;
     }
 }
