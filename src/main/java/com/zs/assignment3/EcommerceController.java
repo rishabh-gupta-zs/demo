@@ -35,7 +35,7 @@ public class EcommerceController {
         int input;
         System.out.println("Select the category in which you want to add the product");
         do{
-            System.out.println("1.  Mobile\n2.  Washing Machine\n3.  Snacks\n");
+            System.out.println("1.  Mobile\n2.  Washing Machine\n3.  Snacks\n-1. go back");
             input= scanner.nextInt();
             switch (input){
                 case 1:
@@ -47,18 +47,20 @@ public class EcommerceController {
                 case 3:
                     ecommerceServices.addSnacks();
                     break;
+                case -1:
+                    break;
                 default:
                     System.out.println("Invalid Input");
                     break;
             }
 
-        }while (!(input==1 || input==2 || input==3));
+        }while (input!=-1);
     }
     public void showProducts(){
         int input;
         System.out.println("---  SHOW  ---");
         do{
-            System.out.println("1.  Mobile\n2.  Washing Machine\n3.  Snacks\n4.  All\nAny other to Back");
+            System.out.println("1.  Mobile\n2.  Washing Machine\n3.  Snacks\n4.  All\n-1. go back");
             input= scanner.nextInt();
             switch (input){
                 case 1:
@@ -75,6 +77,10 @@ public class EcommerceController {
                     showWashMachine();
                     showSnacks();
                     break;
+                case -1:
+                    break;
+                default:
+                    System.out.println("Invalid input");
             }
         }while (input!=-1);
     }

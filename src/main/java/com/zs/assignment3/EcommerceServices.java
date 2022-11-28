@@ -23,7 +23,6 @@ public class EcommerceServices {
     public void addMobile(){
         System.out.println("Adding new Mobile. Please provide following data");
         System.out.println("Name");
-        scanner.nextLine();
         String name= scanner.nextLine();
         System.out.println("Product id");
         String productID= scanner.nextLine();
