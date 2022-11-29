@@ -2,10 +2,6 @@ package com.zs.assignment3.model;
 
 public class Snack extends Grocery{
     private String taste;
-//    Snack(String name, String productID, int price, String taste, int weight){
-//        super(name, productID, price,weight);
-//        this.taste=taste;
-//    }
 
 
     public void setTaste(String taste) {
@@ -15,4 +11,14 @@ public class Snack extends Grocery{
     public String getTaste() {
         return taste;
     }
+
+    @Override
+    public String toString() {
+        return "Snack{" +
+                "taste='" + taste + '\'' +
+                ", name='" + name + '\'' +
+                ", productID='" + productID + '\'' +
+                '}';
+    }
+
 }

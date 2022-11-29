@@ -4,24 +4,29 @@ import com.zs.assignment3.model.Mobile;
 import com.zs.assignment3.model.Snack;
 import com.zs.assignment3.model.WashingMachine;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class EcommerceService {
 
-    public ArrayList<Snack> snacks=new ArrayList<>();
-    public ArrayList<Mobile> mobiles=new ArrayList<>();
-    public ArrayList<WashingMachine> washingMachines=new ArrayList<>();
+//    public ArrayList<Snack> snacks=new ArrayList<>();
+//    public ArrayList<Mobile> mobiles=new ArrayList<>();
+//    public ArrayList<WashingMachine> washingMachines=new ArrayList<>();
+
+    private HashMap<String, ArrayList<Mobile>> products=new HashMap<String, ArrayList<Mobile>>();
     Scanner scanner =new Scanner(System.in);
 
     public void addInitialProducts(){
 
-        addMobile("Realme","mbl-01",10000,"5000 mAh battery",4,128);
-        addWashingMachine("Samsung","wm-01",20000,"Heavy Duty",600);
-        addSnacks("Chips","sn-01",50,"salty",250);
+        addProduct("Mobile","Realme","mbl-01",10000,"5000 mAh battery",4,128);
+
+//        addMobile("Realme","mbl-01",10000,"5000 mAh battery",4,128);
+//        addWashingMachine("Samsung","wm-01",20000,"Heavy Duty",600);
+//        addSnacks("Chips","sn-01",50,"salty",250);
 
     }
 
-    public void addMobile(String name,String productID,int price,String description,int ram,int rom){
+    public void addProduct(String type,String name,String productID,int price,String description,int ram,int rom){
 
         Mobile newMobile=new Mobile();
         newMobile.setName(name);
@@ -30,9 +35,14 @@ public class EcommerceService {
         newMobile.setDescription(description);
         newMobile.setRam(ram);
         newMobile.setRom(rom);
-        mobiles.add(newMobile);
-
+//        mobiles.add(newMobile);
+//        ArrayList<Mobile> al=new ArrayList<>();
+//         products.put(type,al);
+        ArrayList al=products.get(type);
+        al.add(newMobile);
+        products.put(type,al);
     }
+
 
     public void addSnacks(String name,String productID,int price,String taste,int weight){
 

@@ -10,4 +10,5 @@ public class Electronics extends Product{
     public String getDescription() {
         return description;
     }
+
 }

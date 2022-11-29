@@ -19,4 +19,14 @@ public class Mobile extends Electronics{
     public int getRom() {
         return rom;
     }
+
+    @Override
+    public String toString() {
+        return "Mobile{" +
+                "ram=" + ram +
+                ", rom=" + rom +
+                ", name='" + name + '\'' +
+                ", productID='" + productID + '\'' +
+                '}';
+    }
 }
