@@ -1,10 +1,7 @@
 package com.zs.assignment3.controller;
 
-import com.zs.assignment3.model.Mobile;
-import com.zs.assignment3.model.Snack;
-import com.zs.assignment3.model.WashingMachine;
 import com.zs.assignment3.service.EcommerceService;
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EcommerceController {
@@ -12,6 +9,9 @@ public class EcommerceController {
     Scanner scanner =new Scanner(System.in);
     EcommerceService ecommerceService =new EcommerceService();
 
+    /**
+     * Shows the initial options
+     */
     public void start(){
         ecommerceService.addInitialProducts();
         System.out.println("Choose an option");
@@ -34,8 +34,12 @@ public class EcommerceController {
                     break;
             }
         }while ( input!=-1 );
-
     }
+
+    /**
+     * Shows the option to choose which type of category user want to add and according to user's choice
+     * takes the appropriate data from user and call the function to add the product.
+     */
     public void addProductMenu(){
         int input;
         System.out.println("Select the category in which you want to add the product");
@@ -43,7 +47,6 @@ public class EcommerceController {
             System.out.println("1.  Mobile\n2.  Snacks\n3.  Washing Machine\n-1. go back");
             input= scanner.nextInt();
             switch (input){
-
                 case 1:
                     System.out.println("Adding new Mobile. Please provide following data");
                     System.out.println("Name");
@@ -60,7 +63,7 @@ public class EcommerceController {
                     int ram= scanner.nextInt();
                     System.out.println("ROM");
                     int rom= scanner.nextInt();
-                    ecommerceService.addMobile(name,productID,price,description,ram,rom);
+                    ecommerceService.addProduct(name,productID,price,description,ram,rom);
                     System.out.println(name+" added successfully");
                     break;
 
@@ -78,7 +81,7 @@ public class EcommerceController {
                     String taste= scanner.nextLine();
                     System.out.println("Weight");
                     int weight=scanner.nextInt();
-                    ecommerceService.addSnacks(name,productID,price,taste,weight);
+                    ecommerceService.addProduct(name,productID,price,taste,weight);
                     System.out.println(name+" added successfully");
                     break;
 
@@ -96,7 +99,7 @@ public class EcommerceController {
                     description= scanner.nextLine();
                     System.out.println("RPM");
                     int rpm= scanner.nextInt();
-                    ecommerceService.addWashingMachine(name,productID,price,description,rpm);
+                    ecommerceService.addProduct(name,productID,price,rpm,description);
                     System.out.println(name+" added successfully");
                     break;
 
@@ -104,91 +107,63 @@ public class EcommerceController {
                     break;
 
                 default:
-                    System.out.println("Invalid selecion");
+                    System.out.println("Invalid selection");
                     break;
             }
         }while (input!=-1);
     }
 
+    /**
+     * Shows the option to choose which type of category user want to see and according to user's choice,
+     * it calls the showProduct() methode.
+     */
     public void showProducts(){
         int input;
         System.out.println("---  SHOW  ---");
         do{
             System.out.println("1.  Mobile\n2.  Washing Machine\n3.  Snacks\n4.  All\n-1. go back");
             input= scanner.nextInt();
+
             switch (input){
                 case 1:
-                    showMobiles();
+                    showProduct("Mobile");
                     break;
+
                 case 2:
-                    showWashingMachine();
+                    showProduct("WashingMachine");
                     break;
+
                 case 3:
-                    showSnacks();
+                    showProduct("Snack");
                     break;
+
                 case 4:
-                    showMobiles();
-                    showWashingMachine();
-                    showSnacks();
+                    showProduct("Mobile");
+                    showProduct("WashingMachine");
+                    showProduct("Snack");
                     break;
+
                 case -1:
                     break;
+
                 default:
                     System.out.println("Invalid selection");
             }
         }while (input!=-1);
     }
 
-    public void showSnacks(){
-        System.out.println("--- Snacks ---");
-        for(Snack snack: ecommerceService.snacks){
-            System.out.print("\tName\t-\t");
-            System.out.println(snack.getName());
-            System.out.print("\tProduct id\t-\t");
-            System.out.println(snack.getProductID());
-            System.out.print("\tPrice(Rs.)\t-\t");
-            System.out.println(snack.getPrice());
-            System.out.print("\tTaste\t-\t");
-            System.out.println(snack.getTaste());
-            System.out.print("\tWeight\t-\t");
-            System.out.println(snack.getWeight());
-            System.out.println("\t-----*----");
-        }
-    }
+    /**
+     * It prints th data from hashmap with key received in parameter.
+     * @param toShow - Key of hashmap which data user want to print on console
+     */
+    public void showProduct(String toShow){
 
-    public void showWashingMachine(){
-        System.out.println("--- Washing Machine ---");
-        for(WashingMachine washingMachine: ecommerceService.washingMachines){
-            System.out.print("\tName\t-\t");
-            System.out.println(washingMachine.getName()+"\t\t");
-            System.out.print("\tProduct id\t-\t");
-            System.out.println(washingMachine.getProductID()+"\t\t");
-            System.out.print("\tPrice\t-\t");
-            System.out.println(washingMachine.getPrice()+"\t\t");
-            System.out.print("\tDescription\t-\t");
-            System.out.println(washingMachine.getDescription()+"\t\t");
-            System.out.print("\tRPM\t-\t");
-            System.out.println(washingMachine.getRpm());
-            System.out.println("\t-----*----");
-        }
-    }
+        ArrayList productsToShow=ecommerceService.getData(toShow);
+        System.out.println("\n---* " + toShow + " *---");
 
-    public void showMobiles(){
-        System.out.println("--- Mobiles ---");
-        for(Mobile mobile: ecommerceService.mobiles){
-            System.out.print("\tName\t-\t");
-            System.out.println(mobile.getName());
-            System.out.print("\tProduct id\t-\t");
-            System.out.println(mobile.getProductID());
-            System.out.print("\tPrice\t-\t");
-            System.out.println(mobile.getPrice());
-            System.out.print("\tDescription\t-\t");
-            System.out.println(mobile.getDescription());
-            System.out.print("\tRAM\t-\t");
-            System.out.println(mobile.getRam());
-            System.out.print("\tROM\t-\t");
-            System.out.println(mobile.getRom());
-            System.out.println("\t-----*----");
+        for(Object product:productsToShow){
+          System.out.println(product);
         }
+
     }
 }

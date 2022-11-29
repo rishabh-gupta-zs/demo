@@ -13,11 +13,12 @@ public class WashingMachine extends Electronics{
 
     @Override
     public String toString() {
-        return "WashingMachine{" +
-                "rpm=" + rpm +
-                ", name='" + name + '\'' +
-                ", productID='" + productID + '\'' +
-                '}';
+        return "#\t\t" +
+                "Name='" + getName() + '\'' +
+                ",\tDescription='" + getDescription() + '\'' +
+                ",\tPrice='" + getPrice() + '\'' +
+                ",\tRPM=" + rpm +
+                ",\tproductID='" + getProductID() + '\'';
     }
 
 }

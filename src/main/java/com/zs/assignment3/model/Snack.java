@@ -14,11 +14,11 @@ public class Snack extends Grocery{
 
     @Override
     public String toString() {
-        return "Snack{" +
-                "taste='" + taste + '\'' +
-                ", name='" + name + '\'' +
-                ", productID='" + productID + '\'' +
-                '}';
+        return "#\t" +
+                "\tName: '" + getName() + '\'' +
+                ",\tPrice: " + getPrice() +
+                ",\tTaste: " + taste +
+                ",\tWeight(per pack): " + getWeight() +
+                ",\tproductID: '" + getProductID() + '\'';
     }
-
 }

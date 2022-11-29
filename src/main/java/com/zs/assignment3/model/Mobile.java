@@ -22,11 +22,12 @@ public class Mobile extends Electronics{
 
     @Override
     public String toString() {
-        return "Mobile{" +
-                "ram=" + ram +
-                ", rom=" + rom +
-                ", name='" + name + '\'' +
-                ", productID='" + productID + '\'' +
-                '}';
+        return "#\t" +
+                "\tName: '" + getName() + '\'' +
+                ",\tRAM: " + ram +
+                ",\tROM: " + rom +
+                ",\tPrice: " + getPrice() +
+                ",\tDescription: " + getDescription() +
+                ",\tproductID: '" + getProductID() + '\'';
     }
 }

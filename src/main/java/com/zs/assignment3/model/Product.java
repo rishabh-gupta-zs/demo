@@ -2,13 +2,7 @@ package com.zs.assignment3.model;
 
 public class Product {
     private int price;
-    String name,productID;
-//    Product(String name,String productID,int price){
-//        this.name=name;
-//        this.price=price;
-//        this.productID=productID;
-//    }
-
+    private String name,productID;
 
     public void setPrice(int price) {
         this.price = price;
