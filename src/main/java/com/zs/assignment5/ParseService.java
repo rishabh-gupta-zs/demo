@@ -3,17 +3,19 @@ package com.zs.assignment5;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class ParseService {
 
     public File file=null;
     public Scanner fileReader;
     public ArrayList<LogData> logDataArrayList=new ArrayList<>();
+    public HashSet<String> authors=new HashSet<>();
+    public HashMap<String,Integer> commitFrequency=new HashMap<>();
+
+
     public void readFile(String filePathName) throws LogException, FileNotFoundException {
-        file=new File("log.txt");
+        file=new File(filePathName);
         if(!file.exists()){
             throw new LogException("File not found");
         }
@@ -26,7 +28,6 @@ public class ParseService {
         if(!fileReader.hasNext()){
             throw new LogException("Empty File");
         }
-        System.out.println(fileReader.hasNext());
         String commitLine,authorLine,dateLine,author;
         Date commitDate;
 
@@ -38,18 +39,17 @@ public class ParseService {
         while (fileReader.hasNext()){
             authorLine=fileReader.nextLine();
             author=getAuthor(authorLine);
+            authors.add(author);
 
             dateLine=fileReader.nextLine();
             commitDate=getDate(dateLine);
 
-//            logDataArrayList.add(new LogData(author,commitDate));
+            logDataArrayList.add(new LogData(author,commitDate));
             while (fileReader.hasNext()){
                 commitLine= fileReader.nextLine();
                 if(commitLine.startsWith("commit"))
                     break;
             }
-            System.out.println(author+"\n"+commitDate.getTime());
-//            if(!fileReader.hasNext()) throw new LogException("Incomplete data");
         }
 
     }
@@ -101,9 +101,49 @@ public class ParseService {
         }
         throw new LogException("Invalid date format*"+month+"*");
     }
+
     public void printData(){
         for(LogData data:logDataArrayList){
-            System.out.println(data.author+"-->"+data.commitDate.getTime());
+            System.out.println(data.author+"-->"+data.commitDate.getTime()
+            );
+        }
+    }
+
+    public void commitFrequencyAfter(Date date){
+         for (LogData logdata:logDataArrayList){
+             if(logdata.commitDate.after(date)){
+                 if(commitFrequency.containsKey(logdata.author)){
+                     commitFrequency.put(logdata.author,commitFrequency.get(logdata.author)+1);
+                 }
+                 else{
+                     commitFrequency.put(logdata.author, 1);
+                 }
+             }
+         }
+         printFrequncy();
+    }
+    public void commitFrequencyPerdayAfter(Date date){
+//        if()
+        for (LogData logdata:logDataArrayList){
+            if(logdata.commitDate.after(date)){
+                if(commitFrequency.containsKey(logdata.author)){
+                    commitFrequency.put(logdata.author,commitFrequency.get(logdata.author)+1);
+                }
+                else{
+                    commitFrequency.put(logdata.author, 1);
+                }
+            }
+            else {
+                break;
+            }
+        }
+        printFrequncy();
+    }
+
+    public void printFrequncy(){
+
+        for (String author:commitFrequency.keySet()){
+            System.out.println(author+" --> "+commitFrequency.get(author));
         }
     }
 
