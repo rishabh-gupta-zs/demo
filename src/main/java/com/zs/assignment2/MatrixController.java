@@ -43,6 +43,9 @@ public class MatrixController {
         int[][] matrix2=inputMatrix();
         int[][] result= matrixService.sum(matrix1,matrix2);
         System.out.print("Addition ");
+        if(result==null){
+            System.out.println("can not done");
+        }
         printMatrix(result);
     }
 
@@ -51,6 +54,9 @@ public class MatrixController {
         int[][] matrix2=inputMatrix();
         int[][] result= matrixService.subtraction(matrix1,matrix2);
         System.out.print("Subtraction ");
+        if(result==null){
+            System.out.println("can not done");
+        }
         printMatrix(result);
     }
 
@@ -59,6 +65,9 @@ public class MatrixController {
         int[][] matrix2=inputMatrix();
         int[][] result= matrixService.product(matrix1,matrix2);
         System.out.print("Multiplication ");
+        if(result==null){
+            System.out.println("can not done");
+        }
         printMatrix(result);
     }
 
@@ -80,7 +89,6 @@ public class MatrixController {
 
     public void printMatrix(int[][] matrix){
         if(matrix==null){
-            System.out.println("can not done");
             return;
         }
         System.out.println("-");
