@@ -1,20 +1,27 @@
 package com.zs.assignment5;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.zs.assignment5.controller.ParserController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainParser {
-    private  static final Logger logger = LogManager.getLogger(MainParser.class);
+
     public static void main(String[] args) {
 
-        logger.info("Hello");
+        ParserController parserController=new ParserController();
+        String filePathName="log.txt";
 
-//        ParserController parserController=new ParserController();
-//        String filePathName="log.txt";
-//        Date date=new Date(2022,10,8);    //yyyy,mm,dd
-//        parserController.start( filePathName , date );
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
+        Date date= null;
+        try {
+            date = simpleDateFormat.parse("25-Nov-2022");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        parserController.start( filePathName , date );
 
     }
 }
