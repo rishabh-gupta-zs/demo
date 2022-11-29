@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MatrixController {
 
-    public Scanner scanner=new Scanner(System.in);
-    public MatrixService matrixService=new MatrixService();
+    private Scanner scanner=new Scanner(System.in);
+    private MatrixService matrixService=new MatrixService();
 
     public void run(){
 
