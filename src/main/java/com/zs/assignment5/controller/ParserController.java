@@ -21,7 +21,7 @@ public class ParserController {
 
         try {
             parseService.readFile(filePathName);
-            parseService.extractData();
+            parseService.extractDataAfter(date);
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -38,19 +38,24 @@ public class ParserController {
             System.out.println("Select------");
             System.out.printf(" 1.  Count of commit by Each developer since - %d/%d/%d%n",date.getDate(),date.getMonth(),date.getYear());
             System.out.printf(" 2.  Count of commit by Each developer per day since - %d/%d/%d%n",date.getDate(),date.getMonth(),date.getYear());
-            System.out.println(" 3.  List of developer who did not commit for 2 days\n-1  Exit");
+            System.out.println(" 3.  print data");
+            System.out.println(" 4.  List of developer who did not commit for 2 days\n-1  Exit");
             input=scanner.nextInt();
 
             switch (input){
                 case 1:
-                    parseService.commitFrequencyAfter(date);
+                    parseService.commitFrequency();
                     break;
 
                 case 2:
-                    parseService.commitFrequencyPerdayAfter(date);
+                    parseService.commitFrequencyPerday();
                     break;
 
                 case 3:
+                    parseService.printData();
+                    break;
+
+                case 4:
                     break;
 
                 case -1:

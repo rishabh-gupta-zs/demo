@@ -41,39 +41,42 @@ public class ParseService {
      * @throws LogException - throws when file format is incorrect or blank.
      * @throws ParseException - Throws when input cannot parsed.
      */
-    public void extractData() throws LogException, ParseException {
+    public void extractDataAfter(Date date) throws LogException, ParseException {
 
         if(!fileReader.hasNext()){
             throw new LogException("Empty File");
         }
 
-        String commitLine,authorLine,dateLine,author;
-        Date commitDate;
+        String line,dateLine,author="";
+        Date commitDate=null;
 
-        boolean flag=fileReader.nextLine().startsWith("commit");
-        if(!flag){
-            throw new LogException("Invalid format");
-        }
 
         while (fileReader.hasNext()){
-            authorLine=fileReader.nextLine();
-            author=getAuthor(authorLine);
-            authors.add(author);
 
-            dateLine=fileReader.nextLine();
-            commitDate=getDate(dateLine);
+            line=fileReader.nextLine();
+
+            if(line.startsWith("Author:")){
+                author=getAuthor(line);
+                continue;
+            } else if (line.startsWith("Date:")) {
+                commitDate=getDate(line);
+            }
+            else continue;
+
+            if(commitDate!=null && commitDate.before(date))
+                break;
 
             LogData logData=new LogData();
             logData.setAuthor(author);
             logData.setCommitDate(commitDate);
             logDataArrayList.add(logData);
 
-            while (fileReader.hasNext()){
-                commitLine= fileReader.nextLine();
-                if(commitLine.startsWith("commit"))
-                    break;
-            }
         }
+    }
+
+    public void printData(){
+        for(LogData data : logDataArrayList)
+            System.out.println(data);
     }
 
     /**
@@ -87,7 +90,7 @@ public class ParseService {
         if(authorLine.startsWith("Author:"))
          return authorLine.split(" ")[1];
         else
-            throw new LogException("Invalid Format");
+            throw new LogException("Invalid Format 2."+authorLine);
 
     }
 
@@ -113,15 +116,11 @@ public class ParseService {
     }
 
     /**
-     * Log number of commit by each user after given date
-     * @param date - date
+     * Log number of commit by each author
      */
-    public void commitFrequencyAfter(Date date){
+    public void commitFrequency(){
 
          for (LogData logdata:logDataArrayList){
-             if(logdata.getCommitDate().before(date)){
-                 break;
-             }
              if(commitFrequency.containsKey(logdata.getAuthor())){
                  commitFrequency.put(logdata.getAuthor(),commitFrequency.get(logdata.getAuthor())+1);
              }
@@ -134,16 +133,12 @@ public class ParseService {
     }
 
     /**
-     * Log number of commit by each user each day after given date
-     * @param date
+     * Log number of commit by each user each day
      */
-    public void commitFrequencyPerdayAfter(Date date){
+    public void commitFrequencyPerday(){
 
         Date currentdate=logDataArrayList.get(0).getCommitDate();
         for (LogData logdata:logDataArrayList){
-            if(logdata.getCommitDate().before(date)){
-                break;
-            }
             if(currentdate.equals(logdata.getCommitDate())){
                 if(commitFrequency.containsKey(logdata.getAuthor())){
                     commitFrequency.put(logdata.getAuthor(),commitFrequency.get(logdata.getAuthor())+1);

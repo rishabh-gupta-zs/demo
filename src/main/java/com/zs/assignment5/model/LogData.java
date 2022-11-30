@@ -21,4 +21,12 @@ public class LogData {
     public void setCommitDate(Date commitDate) {
         this.commitDate = commitDate;
     }
+
+    @Override
+    public String toString() {
+        return "LogData{" +
+                "author='" + author + '\'' +
+                ", commitDate=" + commitDate +
+                '}';
+    }
 }
