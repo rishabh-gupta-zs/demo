@@ -2,8 +2,11 @@ package com.zs.assignment5.controller;
 
 import com.zs.assignment5.exception.LogException;
 import com.zs.assignment5.service.ParseService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.parser.ParseException;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -11,13 +14,24 @@ public class ParserController {
 
     ParseService parseService=new ParseService();
     Scanner scanner=new Scanner(System.in);
+    private Logger logger= LogManager.getLogger(ParseService.class.getName());
+
 
     /**
      * Reads the file and take input task to perform
      * @param filePathName - Path of git log file
-     * @param date - date after which commit frequency need to print
      */
-    public void start(String filePathName, Date date){
+    public void start(String filePathName){
+
+        logger.info("Enter date after which you want commit frequency (dd-MMM-yyyy)");
+        String dateString=scanner.nextLine();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
+        Date date= null;
+        try {
+            date = simpleDateFormat.parse(dateString);
+        } catch (java.text.ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             parseService.readFile(filePathName);
@@ -35,11 +49,11 @@ public class ParserController {
 
         int input;
         do{
-            System.out.println("Select------");
-            System.out.printf(" 1.  Count of commit by Each developer since - %d/%d/%d%n",date.getDate(),date.getMonth(),date.getYear());
-            System.out.printf(" 2.  Count of commit by Each developer per day since - %d/%d/%d%n",date.getDate(),date.getMonth(),date.getYear());
-            System.out.println(" 3.  print data");
-            System.out.println(" 4.  List of developer who did not commit for 2 days\n-1  Exit");
+            logger.info("\n--- Select ---"+
+                    "\n 1.  Count of commit by Each developer since - "+date+
+                    "\n 2.  Count of commit by Each developer per day since - "+date+
+                    "\n 3.  print data"+
+                    "\n 4.  List of developer who did not commit since 2 days\n-1  Exit");
             input=scanner.nextInt();
 
             switch (input){
@@ -56,14 +70,15 @@ public class ParserController {
                     break;
 
                 case 4:
+                    parseService.printInactiveAuthors();
                     break;
 
                 case -1:
-                    System.out.println("Exit.");
+                    logger.info("Exit.");
                     break;
 
                 default:
-                    System.out.println("Invalid Selection");
+                    logger.info("Invalid Selection");
                     break;
             }
         }while (input!=-1);

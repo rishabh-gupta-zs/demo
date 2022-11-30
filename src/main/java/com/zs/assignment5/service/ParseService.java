@@ -14,8 +14,8 @@ public class ParseService {
 
     Scanner fileReader;
     private ArrayList<LogData> logDataArrayList=new ArrayList<>();
-    private HashSet<String> authors=new HashSet<>();
     private HashMap<String,Integer> commitFrequency=new HashMap<>();
+    private HashSet<String> authors=new HashSet<>();
     private Logger logger= LogManager.getLogger(ParseService.class.getName());
 
     /**
@@ -33,7 +33,6 @@ public class ParseService {
         else{
             fileReader=new Scanner(new File(filePathName));
         }
-
     }
 
     /**
@@ -46,15 +45,11 @@ public class ParseService {
         if(!fileReader.hasNext()){
             throw new LogException("Empty File");
         }
-
         String line,dateLine,author="";
         Date commitDate=null;
 
-
         while (fileReader.hasNext()){
-
             line=fileReader.nextLine();
-
             if(line.startsWith("Author:")){
                 author=getAuthor(line);
                 continue;
@@ -70,13 +65,13 @@ public class ParseService {
             logData.setAuthor(author);
             logData.setCommitDate(commitDate);
             logDataArrayList.add(logData);
-
+            authors.add(author);
         }
     }
 
     public void printData(){
         for(LogData data : logDataArrayList)
-            System.out.println(data);
+            logger.info(data);
     }
 
     /**
@@ -90,8 +85,7 @@ public class ParseService {
         if(authorLine.startsWith("Author:"))
          return authorLine.split(" ")[1];
         else
-            throw new LogException("Invalid Format 2."+authorLine);
-
+            throw new LogException("Invalid Format");
     }
 
     /**
@@ -128,7 +122,9 @@ public class ParseService {
                  commitFrequency.put(logdata.getAuthor(), 1);
              }
          }
-         printFrequncy();
+
+         logger.info("  Number of commit by each authore ");
+         printFrequency();
          commitFrequency.clear();
     }
 
@@ -149,24 +145,47 @@ public class ParseService {
             }
             else {
                 logger.info("--*  "+currentdate+"  *--");
-                printFrequncy();
+                printFrequency();
                 commitFrequency.clear();
                 currentdate=logdata.getCommitDate();
+                commitFrequency.put(logdata.getAuthor(), 1);
             }
         }
         logger.info("--*  "+currentdate+"  *--");
-        printFrequncy();
+        printFrequency();
         commitFrequency.clear();
+    }
+
+    /**
+     * Prints the authors who have not committed for last 2 days
+     */
+    public void printInactiveAuthors(){
+
+        Date before2Days=logDataArrayList.get(0).getCommitDate();
+        before2Days.setDate(before2Days.getDate()-1);
+        HashSet<String> activeAuthors=new HashSet<>();
+
+        for(LogData logData:logDataArrayList){
+            if(logData.getCommitDate().before(before2Days)){
+                break;
+            }
+            activeAuthors.add(logData.getAuthor());
+        }
+
+        logger.info("----* Authors Inactive From 2 Days *----");
+        for (String author : authors){
+            if(!activeAuthors.contains(author))
+                logger.info(author);
+        }
     }
 
     /**
      * prints the hashmap which has frequency of commit
      */
-    public void printFrequncy(){
+    public void printFrequency(){
 
         for (String author:commitFrequency.keySet()){
-            logger.info("\t"+author+" --> "+commitFrequency.get(author)+"\n");
+            logger.info("\t"+author+" --> "+commitFrequency.get(author));
         }
     }
-
 }

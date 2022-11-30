@@ -1,14 +1,81 @@
-[INFO ] 2022-11-29 18:06:35.767 [main] MainParser - Hello
-[INFO ] 2022-11-29 18:07:16.224 [main] MainParser - Hello
-[INFO ] 2022-11-30 01:38:54.110 [main] ParseService - guptarishabh2390 --> 1
-
-[INFO ] 2022-11-30 01:39:24.123 [main] ParseService - --*  Sun Nov 27 00:00:00 IST 2022  *--
-[INFO ] 2022-11-30 01:39:24.123 [main] ParseService - guptarishabh2390 --> 1
-
-[INFO ] 2022-11-30 01:39:27.109 [main] ParseService - --*  Sun Nov 27 00:00:00 IST 2022  *--
-[INFO ] 2022-11-30 01:39:27.110 [main] ParseService - guptarishabh2390 --> 1
-
-[INFO ] 2022-11-30 01:39:29.109 [main] ParseService - guptarishabh2390 --> 1
-
-[INFO ] 2022-11-30 01:39:36.111 [main] ParseService - guptarishabh2390 --> 1
-
+[INFO ] 2022-12-01 00:27:17.819 [main] ParseService - Enter date after which you want commit frequency (dd-MMM-yyyy)
+[INFO ] 2022-12-01 00:27:28.452 [main] ParseService - 
+--- Select ---
+ 1.  Count of commit by Each developer since - Wed Apr 20 00:00:00 IST 2022
+ 2.  Count of commit by Each developer per day since - Wed Apr 20 00:00:00 IST 2022
+ 3.  print data
+ 4.  List of developer who did not commit since 2 days
+-1  Exit
+[INFO ] 2022-12-01 00:27:32.429 [main] ParseService -   Number of commit by each authore 
+[INFO ] 2022-12-01 00:27:32.430 [main] ParseService - 	kimzerovirus --> 1
+[INFO ] 2022-12-01 00:27:32.431 [main] ParseService - 	Rafael --> 1
+[INFO ] 2022-12-01 00:27:32.431 [main] ParseService - 	Elif --> 1
+[INFO ] 2022-12-01 00:27:32.431 [main] ParseService - 	Samay --> 2
+[INFO ] 2022-12-01 00:27:32.432 [main] ParseService - 	Oleksii --> 10
+[INFO ] 2022-12-01 00:27:32.432 [main] ParseService - 	Aldo --> 1
+[INFO ] 2022-12-01 00:27:32.432 [main] ParseService - 
+--- Select ---
+ 1.  Count of commit by Each developer since - Wed Apr 20 00:00:00 IST 2022
+ 2.  Count of commit by Each developer per day since - Wed Apr 20 00:00:00 IST 2022
+ 3.  print data
+ 4.  List of developer who did not commit since 2 days
+-1  Exit
+[INFO ] 2022-12-01 00:27:33.430 [main] ParseService - --*  Fri Aug 12 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.430 [main] ParseService - 	kimzerovirus --> 1
+[INFO ] 2022-12-01 00:27:33.431 [main] ParseService - 	Oleksii --> 1
+[INFO ] 2022-12-01 00:27:33.431 [main] ParseService - --*  Thu Aug 11 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.432 [main] ParseService - 	Rafael --> 1
+[INFO ] 2022-12-01 00:27:33.432 [main] ParseService - 	Elif --> 1
+[INFO ] 2022-12-01 00:27:33.432 [main] ParseService - --*  Wed Aug 10 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.433 [main] ParseService - 	Samay --> 1
+[INFO ] 2022-12-01 00:27:33.433 [main] ParseService - --*  Fri Jul 29 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.434 [main] ParseService - 	Samay --> 1
+[INFO ] 2022-12-01 00:27:33.434 [main] ParseService - --*  Wed Jul 27 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.434 [main] ParseService - 	Aldo --> 1
+[INFO ] 2022-12-01 00:27:33.434 [main] ParseService - --*  Tue Jul 26 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.435 [main] ParseService - 	Oleksii --> 3
+[INFO ] 2022-12-01 00:27:33.435 [main] ParseService - --*  Sun Jul 24 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.435 [main] ParseService - 	Oleksii --> 5
+[INFO ] 2022-12-01 00:27:33.436 [main] ParseService - --*  Sat Jul 02 00:00:00 IST 2022  *--
+[INFO ] 2022-12-01 00:27:33.436 [main] ParseService - 	Oleksii --> 1
+[INFO ] 2022-12-01 00:27:33.436 [main] ParseService - 
+--- Select ---
+ 1.  Count of commit by Each developer since - Wed Apr 20 00:00:00 IST 2022
+ 2.  Count of commit by Each developer per day since - Wed Apr 20 00:00:00 IST 2022
+ 3.  print data
+ 4.  List of developer who did not commit since 2 days
+-1  Exit
+[INFO ] 2022-12-01 00:27:34.431 [main] ParseService - LogData{author='Oleksii', commitDate=Fri Aug 12 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.432 [main] ParseService - LogData{author='kimzerovirus', commitDate=Fri Aug 12 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.432 [main] ParseService - LogData{author='Rafael', commitDate=Thu Aug 11 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.432 [main] ParseService - LogData{author='Elif', commitDate=Thu Aug 11 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.433 [main] ParseService - LogData{author='Samay', commitDate=Wed Aug 10 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.433 [main] ParseService - LogData{author='Samay', commitDate=Fri Jul 29 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.433 [main] ParseService - LogData{author='Aldo', commitDate=Wed Jul 27 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.433 [main] ParseService - LogData{author='Oleksii', commitDate=Tue Jul 26 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.434 [main] ParseService - LogData{author='Oleksii', commitDate=Tue Jul 26 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.434 [main] ParseService - LogData{author='Oleksii', commitDate=Tue Jul 26 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.434 [main] ParseService - LogData{author='Oleksii', commitDate=Sun Jul 24 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.435 [main] ParseService - LogData{author='Oleksii', commitDate=Sun Jul 24 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.435 [main] ParseService - LogData{author='Oleksii', commitDate=Sun Jul 24 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.435 [main] ParseService - LogData{author='Oleksii', commitDate=Sun Jul 24 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.436 [main] ParseService - LogData{author='Oleksii', commitDate=Sun Jul 24 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.436 [main] ParseService - LogData{author='Oleksii', commitDate=Sat Jul 02 00:00:00 IST 2022}
+[INFO ] 2022-12-01 00:27:34.436 [main] ParseService - 
+--- Select ---
+ 1.  Count of commit by Each developer since - Wed Apr 20 00:00:00 IST 2022
+ 2.  Count of commit by Each developer per day since - Wed Apr 20 00:00:00 IST 2022
+ 3.  print data
+ 4.  List of developer who did not commit since 2 days
+-1  Exit
+[INFO ] 2022-12-01 00:27:35.430 [main] ParseService - ----* Authors Inactive From 2 Days *----
+[INFO ] 2022-12-01 00:27:35.430 [main] ParseService - Samay
+[INFO ] 2022-12-01 00:27:35.468 [main] ParseService - Aldo
+[INFO ] 2022-12-01 00:27:35.468 [main] ParseService - 
+--- Select ---
+ 1.  Count of commit by Each developer since - Wed Apr 20 00:00:00 IST 2022
+ 2.  Count of commit by Each developer per day since - Wed Apr 20 00:00:00 IST 2022
+ 3.  print data
+ 4.  List of developer who did not commit since 2 days
+-1  Exit
+[INFO ] 2022-12-01 00:27:37.430 [main] ParseService - Exit.
