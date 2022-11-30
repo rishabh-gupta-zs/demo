@@ -30,6 +30,7 @@ public class ParserController {
         try {
             date = simpleDateFormat.parse(dateString);
         } catch (java.text.ParseException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
 
@@ -38,12 +39,15 @@ public class ParserController {
             parseService.extractDataAfter(date);
 
         } catch (FileNotFoundException e) {
+            logger.error(e);
             throw new RuntimeException(e);
 
         } catch (LogException e) {
+            logger.error(e);
             throw new RuntimeException(e);
 
         } catch (ParseException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
 

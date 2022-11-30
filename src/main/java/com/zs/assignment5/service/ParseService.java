@@ -104,6 +104,7 @@ public class ParseService {
         try {
             commitDate = formatter.parse(stringDate);
         } catch (java.text.ParseException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
         return commitDate;
