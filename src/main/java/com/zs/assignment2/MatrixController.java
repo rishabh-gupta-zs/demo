@@ -4,64 +4,94 @@ import java.util.Scanner;
 
 public class MatrixController {
 
-    public static Scanner scanner=new Scanner(System.in);
+    private Scanner scanner=new Scanner(System.in);
+    private MatrixService matrixService=new MatrixService();
+
     public void run(){
-        MatrixService matrixServices=new MatrixService();
+
+        int input;
+        do{
+            System.out.println("1.  Addition\n2.  Subtraction\n3.  Multiplication\n" +
+                    "4.  Scalar Product\n5.  Transpose\n-1 Exit");
+            input=scanner.nextInt();
+            switch (input){
+                case 1:
+                    addition();
+                    break;
+                case 2:
+                    subtraction();
+                    break;
+                case 3:
+                    multiplication();
+                    break;
+                case 4:
+                    scalarProduct();
+                    break;
+                case 5:
+                    transpose();
+                    break;
+                case -1:
+                    break;
+                default:
+                    System.out.println("Invalid selection");
+            }
+        }while(input!=-1);
+    }
+
+    public void addition(){
         int[][] matrix1=inputMatrix();
         int[][] matrix2=inputMatrix();
+        int[][] result= matrixService.sum(matrix1,matrix2);
+        System.out.print("Addition ");
+        if(result==null){
+            System.out.println("can not done");
+        }
+        printMatrix(result);
+    }
 
-        System.out.println("Matrix 1 is-");
-        printMatrix(matrix1);
-        System.out.println("Matrix 2 is-");
-        printMatrix(matrix2);
+    public void subtraction(){
+        int[][] matrix1=inputMatrix();
+        int[][] matrix2=inputMatrix();
+        int[][] result= matrixService.subtraction(matrix1,matrix2);
+        System.out.print("Subtraction ");
+        if(result==null){
+            System.out.println("can not done");
+        }
+        printMatrix(result);
+    }
 
-        int[][] sum=matrixServices.sum(matrix1,matrix2);
-        if(sum==null){
-            System.out.println("Sum is not possible for these matrices");
+    public void multiplication(){
+        int[][] matrix1=inputMatrix();
+        int[][] matrix2=inputMatrix();
+        int[][] result= matrixService.product(matrix1,matrix2);
+        System.out.print("Multiplication ");
+        if(result==null){
+            System.out.println("can not done");
         }
-        else{
-            System.out.println("Sum of matrices is-");
-            printMatrix(sum);
-        }
+        printMatrix(result);
+    }
 
-        int[][] subtraction=matrixServices.subtraction(matrix1,matrix2);
-        if(subtraction==null){
-            System.out.println("subtraction is not possible for these matrices");
-        }
-        else{
-            System.out.println("Subtraction of matrices is-");
-            printMatrix(subtraction);
-        }
-
-        int[][] product=matrixServices.product(matrix1,matrix2);
-        if(product==null){
-            System.out.println("Product is not possible for these matrices");
-        }
-        else{
-            System.out.println("Product of matrices is-");
-            printMatrix(product);
-        }
-
+    public void scalarProduct(){
+        int[][] matrix=inputMatrix();
         System.out.println("Enter a number for scalar product");
         int number=scanner.nextInt();
-        int[][] scalarProduct1=matrixServices.scalarProduct(matrix1,number);
-        System.out.println("Scalar product of first matrix with "+number+" is");
-        printMatrix(scalarProduct1);
+        int[][] result=matrixService.scalarProduct(matrix,number);
+        System.out.print("Scalar product ");
+        printMatrix(result);
+    }
 
-        int[][] scalarProduct2=matrixServices.scalarProduct(matrix2,number);
-        System.out.println("Scalar product of second matrix with "+number+" is");
-        printMatrix(scalarProduct2);
-
-        int[][] transpose1= matrixServices.transpose(matrix1);
-        System.out.println("Transpose of first matrix is");
-        printMatrix(transpose1);
-
-        int[][] transpose2= matrixServices.transpose(matrix2);
-        System.out.println("Transpose of second matrix is");
-        printMatrix(transpose2);
+    public void transpose(){
+        int[][] matrix=inputMatrix();
+        int[][] result=matrixService.transpose(matrix);
+        System.out.print("Transpose ");
+        printMatrix(result);
     }
 
     public void printMatrix(int[][] matrix){
+        if(matrix==null){
+            return;
+        }
+        System.out.println("-");
         int row= matrix.length;
         int column=matrix[0].length;
         for (int i = 0; i < row; i++) {
@@ -70,6 +100,7 @@ public class MatrixController {
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 
     public int[][] inputMatrix(){
