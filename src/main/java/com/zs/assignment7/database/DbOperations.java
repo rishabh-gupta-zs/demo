@@ -10,7 +10,6 @@ public class DbOperations {
     private final String DB_URL = "jdbc:postgresql://localhost:2006/mydb";
     private final String USER = "postgres";
     private final String PASSWORD = "root123";
-    private int id = -1 * (int) (new Date()).getTime();
 
     /**
      * Creates the student table with id,first name,last name,phone
@@ -69,13 +68,12 @@ public class DbOperations {
      */
     public void insertStudent(String firstName, String lastname, String phone) throws SQLException {
 
-        String value = "(" + id + ",\'" + firstName + "\',\'" + lastname + "\',\'" + phone + "\')";
-        String query = "insert into student(id, firstName, lastName, phone) values " + value;
+        String value = "(\'" + firstName + "\',\'" + lastname + "\',\'" + phone + "\')";
+        String query = "insert into student(firstName, lastName, phone) values " + value;
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            int executeUpdate=preparedStatement.executeUpdate();
-            if(executeUpdate>0)  id++;
+            preparedStatement.executeUpdate();
         }
     }
 
