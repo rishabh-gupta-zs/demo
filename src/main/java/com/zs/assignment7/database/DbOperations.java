@@ -48,7 +48,7 @@ public class DbOperations {
                 return;
             }
             String query = "CREATE TABLE IF NOT EXISTS department (" +
-                    "departmentid serial PRIMARY KEY," +
+                    "departmentid integer PRIMARY KEY," +
                     "departmentName varchar (20));";
             statement.executeUpdate(query);
             String value = "(0,'CS'),(1,'EC'),(2,'ME')";
@@ -74,8 +74,8 @@ public class DbOperations {
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.executeUpdate();
-
+            int executeUpdate=preparedStatement.executeUpdate();
+            if(executeUpdate>0)  id++;
         }
     }
 
@@ -107,7 +107,7 @@ public class DbOperations {
                 return;
             }
             String query = "ALTER TABLE student " +
-                    "ADD COLUMN departmentID VARCHAR";
+                    "ADD COLUMN departmentID integer";
             statement.executeUpdate(query);
         } catch (Exception e) {
             System.exit(0);
@@ -120,11 +120,11 @@ public class DbOperations {
      */
     public ArrayList<Student> getAllData() {
         ArrayList<Student> studentsList = new ArrayList<>();
-//            String query = "SELECT * " +
-//                    "FROM student  " +
-//                    "FULL OUTER JOIN department " +
-//                    "ON student.departmentId = department.departmentId;";
-        String query = "Select * from student";
+            String query = "SELECT " +
+                    "id,firstname,lastname,phone,departmentname,department.departmentid " +
+                    "FROM student " +
+                    "LEFT JOIN department  " +
+                    "ON student.departmentid = department.departmentid";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
@@ -153,7 +153,7 @@ public class DbOperations {
         student.setFirstname(resultSet.getString("firstName"));
         student.setLastName(resultSet.getString("lastName"));
         student.setPhone(resultSet.getString("phone"));
-        student.setDepartmentName("resultSet.getString(\"departmentName\")");
+        student.setDepartmentName(resultSet.getString("departmentName"));
         student.setDepartmentID(resultSet.getInt("departmentId"));
         return student;
     }
