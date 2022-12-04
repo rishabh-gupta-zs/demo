@@ -1,23 +1,13 @@
 package com.zs.assignment3.model;
 
-public class Mobile extends Electronics{
+public class Mobile extends Electronic {
 
     private int ram,rom;
 
-    public void setRam(int ram) {
+    public Mobile(int price, String name, String productID, String description, int ram, int rom) {
+        super(price, name, productID, description);
         this.ram = ram;
-    }
-
-    public void setRom(int rom) {
         this.rom = rom;
-    }
-
-    public int getRam() {
-        return ram;
-    }
-
-    public int getRom() {
-        return rom;
     }
 
     @Override

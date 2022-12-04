@@ -1,6 +1,7 @@
 package com.zs.assignment3.service;
 
 import com.zs.assignment3.model.Mobile;
+import com.zs.assignment3.model.Product;
 import com.zs.assignment3.model.Snack;
 import com.zs.assignment3.model.WashingMachine;
 import java.util.ArrayList;
@@ -8,96 +9,34 @@ import java.util.HashMap;
 
 public class EcommerceService {
 
-    private HashMap<String, ArrayList<Object>> products=new HashMap<>();
+    private HashMap<String, ArrayList<Product>> products=new HashMap<>();
 
-    /**
-     * Initialise hashmap with empty arraylist and add initial data of each type
-     */
-    public void addInitialProducts(){
-        products.put("Mobile",new ArrayList());
-        products.put("Snack",new ArrayList());
-        products.put("WashingMachine",new ArrayList());
-        addProduct("Realme","mbl-01",10000,"5000 mAh battery",4,128);
-        addProduct("Samsung","wm-01",20000,600,"Heavy Duty");
-        addProduct("Chips","sn-01",50,"salty",250);
+     public EcommerceService(){
 
+        products.put("Mobile",new ArrayList<>());
+        products.put("Snack",new ArrayList<>());
+        products.put("WashingMachine",new ArrayList<>());
+
+        addProduct(new Mobile(10000,"Realme","mbl-01","5000 mAh battery",4,128),"Mobile");
+        addProduct(new WashingMachine(20000,"Samsung washing machine","wm-01","Heavy  Duty",600),"WashingMachine");
+        addProduct(new Snack(50,"Chips","sn-01",250,"Salty"),"Snack");
     }
 
     /**
-     * Adds data in Mobile
-     * @param name - Name of mobile
-     * @param productID - Product ID
-     * @param price - Product price
-     * @param description - Product description
-     * @param ram - Mobile RAM
-     * @param rom - mobile ROM
+     * Adds product in products
      */
-    public void addProduct(String name,String productID,int price,String description,int ram,int rom){
+    public void addProduct(Product product,String productType) {
 
-        Mobile newMobile=new Mobile();
-        newMobile.setName(name);
-        newMobile.setProductID(productID);
-        newMobile.setPrice(price);
-        newMobile.setDescription(description);
-        newMobile.setRam(ram);
-        newMobile.setRom(rom);
-        ArrayList mobiles=products.get("Mobile");
-        mobiles.add(newMobile);
-        products.put("Mobile",mobiles);
-
+        products.get(productType).add(product);
     }
 
     /**
-     * Adds data in Snack
-     * @param name - Name of Snack
-     * @param productID - Product ID
-     * @param price - Product price
-     * @param taste - Product description
-     * @param weight - Product weight per unit
+     * Returns the arraylist of products
+     * @param type - key of product
+     * @return - Arraylist of products
      */
-    public void addProduct(String name,String productID,int price,String taste,int weight){
+    public ArrayList<Product> getProduct(String type){
 
-        Snack newSnack=new Snack();
-        newSnack.setName(name);
-        newSnack.setTaste(taste);
-        newSnack.setProductID(productID);
-        newSnack.setPrice(price);
-        newSnack.setWeight(weight);
-        ArrayList snacks=products.get("Snack");
-        snacks.add(newSnack);
-        products.put("Snack",snacks);
-
+        return products.get(type);
     }
-
-    /**
-     * Adds data in Washing machine
-     * @param name - Name of washing machine
-     * @param productID - Product ID
-     * @param price - Product price
-     * @param description - Product description
-     * @param rpm - Washing machine RPM
-     */
-    public void addProduct(String name,String productID,int price,int rpm,String description){
-
-        WashingMachine newWashingMachine=new WashingMachine();
-        newWashingMachine.setName(name);
-        newWashingMachine.setProductID(productID);
-        newWashingMachine.setRpm(rpm);
-        newWashingMachine.setPrice(price);
-        newWashingMachine.setDescription(description);
-        ArrayList washingMachines=products.get("WashingMachine");
-        washingMachines.add(newWashingMachine);
-        products.put("WashingMachine",washingMachines);
-
-    }
-
-    /**
-     * Returns the required arraylist from hashMap
-     * @param toReturn - key of hashMap whose arrayList need to be return
-     * @return - Arraylist of received key
-     */
-    public ArrayList getData(String toReturn){
-        return products.get(toReturn);
-    }
-
 }

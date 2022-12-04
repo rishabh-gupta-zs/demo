@@ -4,15 +4,9 @@ public class Product {
     private int price;
     private String name,productID;
 
-    public void setPrice(int price) {
+    public Product(int price, String name, String productID) {
         this.price = price;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setProductID(String productID) {
         this.productID = productID;
     }
 

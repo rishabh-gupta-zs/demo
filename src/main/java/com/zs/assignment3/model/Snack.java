@@ -3,13 +3,9 @@ package com.zs.assignment3.model;
 public class Snack extends Grocery{
     private String taste;
 
-
-    public void setTaste(String taste) {
+    public Snack(int price, String name, String productID, int weight, String taste) {
+        super(price, name, productID, weight);
         this.taste = taste;
-    }
-
-    public String getTaste() {
-        return taste;
     }
 
     @Override
