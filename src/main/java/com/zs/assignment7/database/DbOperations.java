@@ -1,16 +1,18 @@
 package com.zs.assignment7.database;
 
 import com.zs.assignment7.model.Student;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DbOperations {
 
     private final String DB_URL = "jdbc:postgresql://localhost:2006/mydb";
     private final String USER = "postgres";
     private final String PASSWORD = "root123";
-
+    private final Logger logger= LoggerFactory.getLogger(DbOperations.class);
     /**
      * Creates the student table with id,first name,last name,phone
      */
@@ -30,6 +32,7 @@ public class DbOperations {
                     "phone varchar(15));";
             statement.executeUpdate(query);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             System.exit(0);
         }
     }
@@ -55,6 +58,7 @@ public class DbOperations {
             statement.executeUpdate(query);
 
         } catch (Exception e) {
+            logger.error(e.getMessage());
             System.exit(0);
         }
     }
@@ -108,6 +112,7 @@ public class DbOperations {
                     "ADD COLUMN departmentID integer";
             statement.executeUpdate(query);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             System.exit(0);
         }
     }
@@ -133,6 +138,7 @@ public class DbOperations {
                 studentsList.add(student);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return studentsList;
@@ -168,6 +174,7 @@ public class DbOperations {
                     " where departmentid is null;";
             statement.executeUpdate(query);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             System.exit(0);
         }
     }
