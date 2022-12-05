@@ -6,20 +6,17 @@ public class LogData {
     private String author;
     private Date commitDate;
 
+    public LogData(String author, Date commitDate) {
+        this.author = author;
+        this.commitDate = commitDate;
+    }
+
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public Date getCommitDate() {
         return commitDate;
-    }
-
-    public void setCommitDate(Date commitDate) {
-        this.commitDate = commitDate;
     }
 
     @Override
