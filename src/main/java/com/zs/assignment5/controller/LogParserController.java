@@ -1,6 +1,6 @@
 package com.zs.assignment5.controller;
 
-import com.zs.assignment5.exception.LogException;
+import com.zs.assignment5.exception.LogFileException;
 import com.zs.assignment5.service.LogParserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,30 +12,23 @@ import java.util.Scanner;
 
 public class LogParserController {
 
-    private LogParserService parseService=new LogParserService();
-    private Scanner scanner=new Scanner(System.in);
-    private Logger logger=LoggerFactory.getLogger(LogParserController.class);
+    private final LogParserService parseService=new LogParserService();
+    private final Scanner scanner=new Scanner(System.in);
+    private final Logger logger=LoggerFactory.getLogger(LogParserController.class);
 
     /**
      * Reads the file and take input task to perform
-     * @param filePathName - Path of git log file
      */
-    public void start(String filePathName){
-
-        boolean flag=true;
-        if (flag)
-            return;
-
+    public void start(){
 
         try {
-            parseService.readFile(filePathName);
             parseService.extractData();
 
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e);
 
-        } catch (LogException e) {
+        } catch (LogFileException e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -61,8 +54,8 @@ public class LogParserController {
                     HashMap<Date,HashMap<String,Integer>> commitCountPerDay=parseService.getCommitCountPerDay(date);
                     for (Date currentDate:commitCountPerDay.keySet()){
                         logger.info("-----> " + currentDate.toString() + " <-------");
-                        for (String author: commitCountPerDay.get(date).keySet()){
-                            logger.info(author + "----> " + commitCountPerDay.get(date).get(author));
+                        for (String author: commitCountPerDay.get(currentDate).keySet()){
+                            logger.info(author + "----> " + commitCountPerDay.get(currentDate).get(author));
                         }
                     }
                     break;
@@ -75,6 +68,7 @@ public class LogParserController {
                     break;
 
                 case 4:
+                    scanner.nextLine();
                     date=inputDate();
                     break;
 
@@ -99,7 +93,7 @@ public class LogParserController {
         while (repeat){
             repeat=false;
             System.out.println("Enter a date (dd-MMMM-yyyy)\n\t\tEg. 30-Jan-2022");
-            date=parseService.getDate(scanner.nextLine());
+            date=parseService.parseDate(scanner.nextLine());
             if (date==null){
                 repeat=true;
             }

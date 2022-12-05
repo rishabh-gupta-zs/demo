@@ -7,8 +7,7 @@ public class MainLogParser {
     public static void main(String[] args) {
 
         LogParserController parserController=new LogParserController();
-        String filePathName="src/main/resources/log.txt";
-        parserController.start( filePathName );
+        parserController.start();
 
     }
 }
