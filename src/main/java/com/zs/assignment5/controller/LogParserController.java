@@ -26,11 +26,9 @@ public class LogParserController {
 
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
-            throw new RuntimeException(e);
 
         } catch (LogFileException e) {
             logger.error(e.getMessage());
-            throw new RuntimeException(e);
         }
 
         Date date=inputDate();
@@ -46,7 +44,7 @@ public class LogParserController {
                 case 1:
                     HashMap<String,Integer> commitCount=parseService.getCommitCount(date);
                     for (String key:commitCount.keySet()){
-                        System.out.println(key + " ---> " + commitCount.get(key));
+                        logger.info(key + " ---> " + commitCount.get(key));
                     }
                     break;
 
@@ -88,15 +86,16 @@ public class LogParserController {
      * @return - date
      */
     public Date inputDate(){
+
         Date date=null;
         boolean repeat=true;
+
         while (repeat){
             repeat=false;
-            System.out.println("Enter a date (dd-MMMM-yyyy)\n\t\tEg. 30-Jan-2022");
+            logger.info("Enter a date (dd-MMMM-yyyy)\n\t\tEg. 30-Jan-2022");
             date=parseService.parseDate(scanner.nextLine());
-            if (date==null){
+            if (date==null)
                 repeat=true;
-            }
         }
         return date;
     }
