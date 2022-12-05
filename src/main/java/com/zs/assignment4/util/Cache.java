@@ -1,12 +1,12 @@
 package com.zs.assignment4.util;
 
-public class Cashe {
+public class Cache {
 
     private String key;
-    private Cashe pre;
-    private Cashe next;
+    private Cache pre;
+    private Cache next;
 
-    public Cashe(String key) {
+    public Cache(String key) {
         this.key = key;
     }
 
@@ -14,19 +14,19 @@ public class Cashe {
         return key;
     }
 
-    public Cashe getPre() {
+    public Cache getPre() {
         return pre;
     }
 
-    public void setPre(Cashe pre) {
+    public void setPre(Cache pre) {
         this.pre = pre;
     }
 
-    public Cashe getNext() {
+    public Cache getNext() {
         return next;
     }
 
-    public void setNext(Cashe next) {
+    public void setNext(Cache next) {
         this.next = next;
     }
 }

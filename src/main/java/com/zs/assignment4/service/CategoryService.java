@@ -5,7 +5,7 @@ import com.zs.assignment4.util.LruCache;
 
 public class CategoryService {
 
-    private Category categories =new Category("Products");
+    private Category rootCategories =new Category("Products");
     private LruCache lruCache=new LruCache();
 
     public CategoryService() {
@@ -19,8 +19,8 @@ public class CategoryService {
         Category hairCare=new Category("Hair Care");
         Category oralCare=new Category("Oral Care");
 
-        categories.addSubCategory(electronics);
-        categories.addSubCategory(grocery);
+        rootCategories.addSubCategory(electronics);
+        rootCategories.addSubCategory(grocery);
         electronics.addSubCategory(laptops);
         electronics.addSubCategory(mobiles);
         electronics.addSubCategory(homeAppliances);
@@ -33,8 +33,8 @@ public class CategoryService {
      * returns root categories
      * @return - categories root
      */
-    public Category getCategories(){
-        return categories;
+    public Category getRootCategories(){
+        return rootCategories;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CategoryService {
      * @return - true/false
      */
     public boolean addCategory(String category,String subCategory){
-        Category result=getCategory(categories,category);
+        Category result=getCategory(rootCategories,category);
         if(result == null){
             return false;
         }
@@ -84,7 +84,7 @@ public class CategoryService {
             return true;
         }
         else{
-            Category result=getCategory(categories,category);
+            Category result=getCategory(rootCategories,category);
             if(result==null){
                 return false;
             }

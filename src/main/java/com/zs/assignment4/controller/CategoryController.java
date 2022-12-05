@@ -53,7 +53,7 @@ public class CategoryController {
                     break;
 
                 case 3:
-                    Category categories= categoryService.getCategories();
+                    Category categories= categoryService.getRootCategories();
                     displayHierarchy(categories);
                     System.out.println("Enter any number to go back");
                     scanner.nextInt();
