@@ -1,12 +1,12 @@
 package com.zs.assignment7.service;
 
-import com.zs.assignment7.database.DbOperations;
+import com.zs.assignment7.dao.StudentDao;
 import com.zs.assignment7.model.Student;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class DbService {
+public class StudentDbService {
 
     /**
      * gets the data from database and write to text file
@@ -16,8 +16,8 @@ public class DbService {
 
     PrintWriter printWriter=new PrintWriter("src/main/dbData.txt");
 
-    DbOperations dbOperations=new DbOperations();
-    ArrayList<Student> students=dbOperations.getAllData();
+    StudentDao studentDao=new StudentDao();
+    ArrayList<Student> students=studentDao.getAllData();
 
     for (Student student:students)
         printWriter.println(student);

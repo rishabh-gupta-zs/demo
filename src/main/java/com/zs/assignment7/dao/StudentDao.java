@@ -1,18 +1,24 @@
-package com.zs.assignment7.database;
+package com.zs.assignment7.dao;
 
 import com.zs.assignment7.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DbOperations {
+public class StudentDao {
 
     private final String DB_URL = "jdbc:postgresql://localhost:2006/mydb";
     private final String USER = "postgres";
     private final String PASSWORD = "root123";
-    private final Logger logger= LoggerFactory.getLogger(DbOperations.class);
+    private final Logger logger= LoggerFactory.getLogger(StudentDao.class);
+
     /**
      * Creates the student table with id,first name,last name,phone
      */
@@ -20,17 +26,20 @@ public class DbOperations {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();) {
+
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet tables = databaseMetaData.getTables(null, null, "student", null);
             if (tables.next()) {
                 return;
             }
+
             String query = "CREATE TABLE student (" +
                     "id serial PRIMARY KEY," +
                     "firstName varchar (15) ," +
                     "lastName varchar(15)," +
                     "phone varchar(15));";
             statement.executeUpdate(query);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
             System.exit(0);
@@ -44,11 +53,13 @@ public class DbOperations {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
+
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet tables = databaseMetaData.getTables(null, null, "department", null);
             if (tables.next()) {
                 return;
             }
+
             String query = "CREATE TABLE IF NOT EXISTS department (" +
                     "departmentid integer PRIMARY KEY," +
                     "departmentName varchar (20));";
@@ -74,8 +85,10 @@ public class DbOperations {
 
         String value = "(\'" + firstName + "\',\'" + lastname + "\',\'" + phone + "\')";
         String query = "insert into student(firstName, lastName, phone) values " + value;
+
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
         }
@@ -89,8 +102,10 @@ public class DbOperations {
 
         String value = "(" + (int) Math.random() * 3 + "),(2,'EC'),(3,'ME')";
         String query = "insert into department(id, departmentName) values " + value;
+
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.executeUpdate();
         }
@@ -99,18 +114,21 @@ public class DbOperations {
     /**
      * creates a column in student table
      */
-    public void createColumn() {
+    public void createColumn(String tablename,String columnName) {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();) {
+
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet tables = databaseMetaData.getColumns(null, null, "student", "departmentid");
             if (tables.next()) {
                 return;
             }
-            String query = "ALTER TABLE student " +
-                    "ADD COLUMN departmentID integer";
+
+            String query = "ALTER TABLE "+ tablename +
+                    " ADD COLUMN "+columnName+" integer";
             statement.executeUpdate(query);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
             System.exit(0);
@@ -134,7 +152,14 @@ public class DbOperations {
              ResultSet resultSet = statement.executeQuery(query);) {
 
             while (resultSet.next()) {
-                Student student = toEmployee(resultSet);
+
+                Student student = new Student();
+                student.setId(resultSet.getInt("id"));
+                student.setFirstname(resultSet.getString("firstName"));
+                student.setLastName(resultSet.getString("lastName"));
+                student.setPhone(resultSet.getString("phone"));
+                student.setDepartmentName(resultSet.getString("departmentName"));
+                student.setDepartmentID(resultSet.getInt("departmentId"));
                 studentsList.add(student);
             }
         } catch (SQLException e) {
@@ -145,27 +170,9 @@ public class DbOperations {
     }
 
     /**
-     * makes object of student
-     * @param resultSet - result set
-     * @return - student object
-     * @throws SQLException - SQSException
-     */
-    private Student toEmployee(ResultSet resultSet) throws SQLException {
-
-        Student student = new Student();
-        student.setId(resultSet.getInt("id"));
-        student.setFirstname(resultSet.getString("firstName"));
-        student.setLastName(resultSet.getString("lastName"));
-        student.setPhone(resultSet.getString("phone"));
-        student.setDepartmentName(resultSet.getString("departmentName"));
-        student.setDepartmentID(resultSet.getInt("departmentId"));
-        return student;
-    }
-
-    /**
      * fill random id in newly created column
      */
-    public void fillDepartmentId() {
+    public void insertDepartmentId() {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();) {
