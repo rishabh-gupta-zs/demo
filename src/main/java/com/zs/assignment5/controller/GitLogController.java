@@ -1,20 +1,24 @@
 package com.zs.assignment5.controller;
 
 import com.zs.assignment5.exception.LogFileException;
-import com.zs.assignment5.service.LogParserService;
+import com.zs.assignment5.service.GitLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class LogParserController {
+public class GitLogController {
 
-    private final LogParserService parseService=new LogParserService();
+    private final GitLogService gitLogService =new GitLogService();
     private final Scanner scanner=new Scanner(System.in);
-    private final Logger logger=LoggerFactory.getLogger(LogParserController.class);
+    private final Logger logger=LoggerFactory.getLogger(GitLogController.class);
+    private final SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
+
 
     /**
      * Reads the file and take input task to perform
@@ -22,13 +26,19 @@ public class LogParserController {
     public void start(){
 
         try {
-            parseService.extractData();
+            gitLogService.extractData();
 
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
+            throw new RuntimeException(e);
 
         } catch (LogFileException e) {
             logger.error(e.getMessage());
+            throw new RuntimeException(e);
+
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         Date date=inputDate();
@@ -42,14 +52,14 @@ public class LogParserController {
             input=scanner.nextInt();
             switch (input){
                 case 1:
-                    HashMap<String,Integer> commitCount=parseService.getCommitCount(date);
+                    HashMap<String,Integer> commitCount= gitLogService.getCommitCount(date);
                     for (String key:commitCount.keySet()){
                         logger.info(key + " ---> " + commitCount.get(key));
                     }
                     break;
 
                 case 2:
-                    HashMap<Date,HashMap<String,Integer>> commitCountPerDay=parseService.getCommitCountPerDay(date);
+                    HashMap<Date,HashMap<String,Integer>> commitCountPerDay= gitLogService.getCommitCountPerDay(date);
                     for (Date currentDate:commitCountPerDay.keySet()){
                         logger.info("-----> " + currentDate.toString() + " <-------");
                         for (String author: commitCountPerDay.get(currentDate).keySet()){
@@ -59,7 +69,7 @@ public class LogParserController {
                     break;
 
                 case 3:
-                    HashSet<String> inactiveDevelopers=parseService.getInactiveAuthors();
+                    HashSet<String> inactiveDevelopers= gitLogService.getInactiveAuthors(date);
                     for (String inactiveDeveloper:inactiveDevelopers){
                         logger.info(inactiveDeveloper);
                     }
@@ -92,10 +102,13 @@ public class LogParserController {
 
         while (repeat){
             repeat=false;
-            logger.info("Enter a date (dd-MMMM-yyyy)\n\t\tEg. 30-Jan-2022");
-            date=parseService.parseDate(scanner.nextLine());
-            if (date==null)
+            logger.info("Enter a date (dd-MMMM-yyyy)\t\tEg. 30-Jan-2022");
+            try {
+                date= simpleDateFormat.parse(scanner.nextLine());
+            } catch (ParseException e) {
+                logger.error("Invalid date format");
                 repeat=true;
+            }
         }
         return date;
     }

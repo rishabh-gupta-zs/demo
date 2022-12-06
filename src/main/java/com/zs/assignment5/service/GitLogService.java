@@ -4,42 +4,26 @@ import com.zs.assignment5.exception.LogFileException;
 import com.zs.assignment5.model.LogData;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class LogParserService {
+public class GitLogService {
 
-    private static Scanner fileReader;
-    private final static ArrayList<LogData> logDataArrayList=new ArrayList<>();
-    private final static Logger logger= LoggerFactory.getLogger(LogParserService.class);//uncomment
-
-    /**
-     * Converts String date into date object
-     * @param dateString - date string
-     * @return - date object
-     */
-    public Date parseDate(String dateString){
-        Date date= null;
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
-        try {
-            date = simpleDateFormat.parse(dateString);
-        } catch (java.text.ParseException e) {
-            logger.error("Invalid Date format."+dateString);
-            return date;
-        }
-        return date;
-    }
+    private final static ArrayList<LogData> logDataList =new ArrayList<>();
+    private final SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
 
     /**
      * Extract the commit date and author name from file and store in arrayList
      * @throws LogFileException - throws when file format is incorrect or blank.
+     * @throws FileNotFoundException - throws when file not found
+     * @throws ParseException - throws when date format is incorrect
      */
-    public void extractData() throws LogFileException, FileNotFoundException {
+    public void extractData() throws LogFileException, FileNotFoundException, ParseException {
 
         String filePathName="src/main/resources/log.txt";
         File file=new File(filePathName);
+        Scanner fileReader;
         if(!file.exists()){
             throw new LogFileException("File not found");
         }
@@ -65,13 +49,13 @@ public class LogParserService {
                 String[] splitDate=line.split(" ");
                 if(splitDate[4].equals("Sep"))    splitDate[4]="Sept";
                 String stringDate=splitDate[5]+"-"+splitDate[4]+"-"+splitDate[7];
-                commitDate= parseDate(stringDate);
+                commitDate= simpleDateFormat.parse(stringDate);
             }
 
             else continue;
 
             LogData logData=new LogData(author,commitDate);
-            logDataArrayList.add(logData);
+            logDataList.add(logData);
         }
     }
 
@@ -84,15 +68,15 @@ public class LogParserService {
 
         HashMap<String,Integer> commitCount=new HashMap<>();
 
-        for (LogData logdata:logDataArrayList){
-            if(logdata.getCommitDate().before(date))
+        for (LogData logData: logDataList){
+            if(logData.getCommitDate().before(date))
                 break;
 
-            if(commitCount.containsKey(logdata.getAuthor())){
-                commitCount.put(logdata.getAuthor(),commitCount.get(logdata.getAuthor())+1);
+            if(commitCount.containsKey(logData.getAuthor())){
+                commitCount.put(logData.getAuthor(),commitCount.get(logData.getAuthor())+1);
             }
             else{
-                commitCount.put(logdata.getAuthor(), 1);
+                commitCount.put(logData.getAuthor(), 1);
             }
         }
         return commitCount;
@@ -105,24 +89,24 @@ public class LogParserService {
 
         HashMap<Date,HashMap<String,Integer>> commitPerDay=new HashMap<>();
         HashMap<String,Integer> commitCountOfDay=new HashMap<>();
-        Date currentdate=logDataArrayList.get(0).getCommitDate();
+        Date currentdate= logDataList.get(0).getCommitDate();
 
-        for (LogData logdata:logDataArrayList){
-            if(logdata.getCommitDate().before(date))
+        for (LogData logData: logDataList){
+            if(logData.getCommitDate().before(date))
                 break;
-            if(currentdate.equals(logdata.getCommitDate())){
-                if(commitCountOfDay.containsKey(logdata.getAuthor())){
-                    commitCountOfDay.put(logdata.getAuthor(),commitCountOfDay.get(logdata.getAuthor())+1);
+            if(currentdate.equals(logData.getCommitDate())){
+                if(commitCountOfDay.containsKey(logData.getAuthor())){
+                    commitCountOfDay.put(logData.getAuthor(),commitCountOfDay.get(logData.getAuthor())+1);
                 }
                 else{
-                    commitCountOfDay.put(logdata.getAuthor(), 1);
+                    commitCountOfDay.put(logData.getAuthor(), 1);
                 }
             }
             else {
                 commitPerDay.put(currentdate,commitCountOfDay);
                 commitCountOfDay=new HashMap<>();
-                currentdate=logdata.getCommitDate();
-                commitCountOfDay.put(logdata.getAuthor(), 1);
+                currentdate=logData.getCommitDate();
+                commitCountOfDay.put(logData.getAuthor(), 1);
             }
         }
         commitPerDay.put(currentdate,commitCountOfDay);
@@ -132,13 +116,15 @@ public class LogParserService {
     /**
      * Returns the authors who have not committed for last 2 days
      */
-    public HashSet<String> getInactiveAuthors(){
+    public HashSet<String> getInactiveAuthors(Date date){
 
-        Date before2Days=logDataArrayList.get(0).getCommitDate();
+        Date before2Days= logDataList.get(0).getCommitDate();
         before2Days.setDate(before2Days.getDate()-1);
         HashSet<String> inactiveDevelopers=new HashSet<>();
 
-        for(LogData logData:logDataArrayList){
+        for(LogData logData: logDataList){
+            if(logData.getCommitDate().before(date))
+                break;
             if(logData.getCommitDate().before(before2Days)){
                 inactiveDevelopers.add(logData.getAuthor());
             }
