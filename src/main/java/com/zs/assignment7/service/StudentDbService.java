@@ -14,7 +14,7 @@ public class StudentDbService {
      */
     public void extractDbData() throws FileNotFoundException {
 
-    PrintWriter printWriter=new PrintWriter("src/main/dbData.txt");
+    PrintWriter printWriter=new PrintWriter("src/resources/dbData.txt");
 
     StudentDao studentDao=new StudentDao();
     ArrayList<Student> students=studentDao.getAllData();
