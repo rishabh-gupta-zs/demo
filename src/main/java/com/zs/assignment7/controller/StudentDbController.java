@@ -25,7 +25,7 @@ public class StudentDbController {
 
         try {
 
-            for( int count=0 ; count<1000000 ; count++ )
+            for( int count=0 ; count<1000 ; count++ )
                 studentDao.insertStudent(randomGenerator.generateRandoString(7),randomGenerator.generateRandoString(7),randomGenerator.generateRandomNumericString(13));
 
         } catch (SQLException e) {

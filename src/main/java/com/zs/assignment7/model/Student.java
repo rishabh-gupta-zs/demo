@@ -9,15 +9,6 @@ public class Student {
     private int departmentID;
     private  String departmentName;
 
-//    public Student(int id, String firstname, String lastName, String mobile, int departmentID, String departmentName) {
-//        this.id = id;
-//        this.firstname = firstname;
-//        this.lastName = lastName;
-//        this.phone = mobile;
-//        this.departmentID = departmentID;
-//        this.departmentName = departmentName;
-//    }
-
     public void setId(int id) {
         this.id = id;
     }

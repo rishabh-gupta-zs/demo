@@ -84,12 +84,15 @@ public class StudentDao {
     public void insertStudent(String firstName, String lastname, String phone) throws SQLException {
 
         String value = "(\'" + firstName + "\',\'" + lastname + "\',\'" + phone + "\')";
-        String query = "insert into student(firstName, lastName, phone) values " + value;
+        String query = "insert into student(firstName, lastName, phone) values "+value;
+
+        for(int i=0;i<1000;i++)
+            query+=","+value;
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query+";");
             preparedStatement.executeUpdate();
         }
     }
