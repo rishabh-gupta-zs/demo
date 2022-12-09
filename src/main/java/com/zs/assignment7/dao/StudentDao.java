@@ -1,12 +1,9 @@
 package com.zs.assignment7.dao;
 
 import com.zs.assignment7.model.Student;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,141 +11,83 @@ import java.util.ArrayList;
 
 public class StudentDao {
 
-    private final String DB_URL = "jdbc:postgresql://localhost:2006/mydb";
-    private final String USER = "postgres";
-    private final String PASSWORD = "root123";
-    private final Logger logger= LoggerFactory.getLogger(StudentDao.class);
+    private final static String DB_URL = "jdbc:postgresql://localhost:2006/mydb";
+    private final static String USER = "postgres";
+    private final static String PASSWORD = "root123";
 
     /**
      * Creates the student table with id,first name,last name,phone
      */
-    public void createStudentTable() {
+    public void createStudentTable() throws SQLException {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();) {
 
-            DatabaseMetaData databaseMetaData = connection.getMetaData();
-            ResultSet tables = databaseMetaData.getTables(null, null, "student", null);
-            if (tables.next()) {
-                return;
-            }
-
-            String query = "CREATE TABLE student (" +
+            String query = "CREATE TABLE  IF NOT EXISTS student (" +
                     "id serial PRIMARY KEY," +
-                    "firstName varchar (15) ," +
-                    "lastName varchar(15)," +
+                    "first_Name varchar (15) ," +
+                    "last_Name varchar(15)," +
                     "phone varchar(15));";
             statement.executeUpdate(query);
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            System.exit(0);
         }
     }
 
-    /**
-     * creates department table
-     */
-    public void createDepartmentTable() {
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             Statement statement = connection.createStatement()) {
-
-            DatabaseMetaData databaseMetaData = connection.getMetaData();
-            ResultSet tables = databaseMetaData.getTables(null, null, "department", null);
-            if (tables.next()) {
-                return;
-            }
-
-            String query = "CREATE TABLE IF NOT EXISTS department (" +
-                    "departmentid integer PRIMARY KEY," +
-                    "departmentName varchar (20));";
-            statement.executeUpdate(query);
-            String value = "(0,'CS'),(1,'EC'),(2,'ME')";
-            query = "insert into department(departmentid, departmentName) values " + value;
-            statement.executeUpdate(query);
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            System.exit(0);
-        }
-    }
 
     /**
      * insert data into student table
-     * @param firstName - first name
-     * @param lastname - last name
-     * @param phone - phone
+     * @param students
      * @throws SQLException - SQLException
      */
-    public void insertStudent(String firstName, String lastname, String phone) throws SQLException {
-
-        String value = "(\'" + firstName + "\',\'" + lastname + "\',\'" + phone + "\')";
-        String query = "insert into student(firstName, lastName, phone) values "+value;
-
-        for(int i=0;i<1000;i++)
-            query+=","+value;
+    public void insertStudents(ArrayList<Student> students) throws SQLException {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query+";");
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    /**
-     * makes a department table
-     * @throws SQLException - SQSException
-     */
-    public void makeDepartmentTable() throws SQLException {
-
-        String value = "(" + (int) Math.random() * 3 + "),(2,'EC'),(3,'ME')";
-        String query = "insert into department(id, departmentName) values " + value;
-
-        try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             Statement statement = connection.createStatement()) {
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.executeUpdate();
+            for(Student student:students) {
+                statement.addBatch("insert into student (first_name,last_name,phone) " +
+                        "values(\'" + student.getFirstname() + "\',\'" + student.getLastName() + "\',\'" +
+                        student.getPhone() + "\')");
+            }
+            statement.executeBatch();
         }
     }
 
     /**
      * creates a column in student table
      */
-    public void createColumn(String tablename,String columnName) {
+    public void mapDepartmentsToStudents() throws SQLException {
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();) {
 
             DatabaseMetaData databaseMetaData = connection.getMetaData();
-            ResultSet tables = databaseMetaData.getColumns(null, null, "student", "departmentid");
-            if (tables.next()) {
-                return;
+            ResultSet tables = databaseMetaData.getColumns(null, null, "student", "department_id");
+
+            String query;
+            if (!tables.next()) {
+                query = "ALTER TABLE student" +
+                        " ADD COLUMN department_id integer";
+                statement.executeUpdate(query);
             }
 
-            String query = "ALTER TABLE "+ tablename +
-                    " ADD COLUMN "+columnName+" integer";
+            query = "update student" +
+                    " set department_id = mod(id,3)" +
+                    " where department_id is null;";
             statement.executeUpdate(query);
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            System.exit(0);
         }
     }
-
     /**
      * makes the arraylist of data in database
      * @return - ArrayList
      */
-    public ArrayList<Student> getAllData() {
+    public ArrayList<Student> getAllData() throws SQLException {
         ArrayList<Student> studentsList = new ArrayList<>();
             String query = "SELECT " +
-                    "id,firstname,lastname,phone,departmentname,department.departmentid " +
+                    "id,first_name,last_name,phone,department_name,department.department_id " +
                     "FROM student " +
-                    "LEFT JOIN department  " +
-                    "ON student.departmentid = department.departmentid";
+                    "INNER JOIN department  " +
+                    "ON student.department_id = department.department_id";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
@@ -156,36 +95,12 @@ public class StudentDao {
 
             while (resultSet.next()) {
 
-                Student student = new Student();
-                student.setId(resultSet.getInt("id"));
-                student.setFirstname(resultSet.getString("firstName"));
-                student.setLastName(resultSet.getString("lastName"));
-                student.setPhone(resultSet.getString("phone"));
-                student.setDepartmentName(resultSet.getString("departmentName"));
-                student.setDepartmentID(resultSet.getInt("departmentId"));
+                Student student = new Student(resultSet.getInt("id"),resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),resultSet.getString("phone"),
+                        resultSet.getInt("department_id"),resultSet.getString("department_name"));
                 studentsList.add(student);
             }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
         }
         return studentsList;
-    }
-
-    /**
-     * fill random id in newly created column
-     */
-    public void insertDepartmentId() {
-
-        try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();) {
-            String query = "update student" +
-                    " set departmentid = mod(id,3)" +
-                    " where departmentid is null;";
-            statement.executeUpdate(query);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            System.exit(0);
-        }
     }
 }
