@@ -32,8 +32,6 @@ public class StudentDao {
         }
     }
 
-
-
     /**
      * insert data into student table
      * @param students
@@ -77,28 +75,43 @@ public class StudentDao {
             statement.executeUpdate(query);
         }
     }
+
     /**
      * makes the arraylist of data in database
      * @return - ArrayList
      */
     public ArrayList<Student> getAllData() throws SQLException {
+
         ArrayList<Student> studentsList = new ArrayList<>();
-            String query = "SELECT " +
-                    "id,first_name,last_name,phone,department_name,department.department_id " +
-                    "FROM student " +
-                    "INNER JOIN department  " +
-                    "ON student.department_id = department.department_id";
+        int lowerLimit=0,upperLimit=10000;
+        String query;
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query);) {
+             Statement statement = connection.createStatement();) {
+            ResultSet resultSet = null;
 
-            while (resultSet.next()) {
+            while(true) {
+                query="SELECT " +
+                        "id,first_name,last_name,phone,department_name,department.department_id " +
+                        "FROM student "+
+                        "INNER JOIN department  " +
+                        "ON student.department_id = department.department_id "+
+                        "WHERE ID BETWEEN " + lowerLimit + " AND " + upperLimit ;
+                resultSet = statement.executeQuery(query);
 
-                Student student = new Student(resultSet.getInt("id"),resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),resultSet.getString("phone"),
-                        resultSet.getInt("department_id"),resultSet.getString("department_name"));
-                studentsList.add(student);
+                if(!resultSet.next()) {
+                    break;
+                }
+
+                while (resultSet.next()) {
+
+                    Student student = new Student(resultSet.getInt("id"),resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),resultSet.getString("phone"),
+                            resultSet.getInt("department_id"),resultSet.getString("department_name"));
+                    studentsList.add(student);
+                }
+                lowerLimit=upperLimit;
+                upperLimit+=10000;
             }
         }
         return studentsList;

@@ -48,24 +48,24 @@ public class StudentDbService {
     public void extractDbData() throws FileNotFoundException, SQLException {
 
     PrintWriter printWriter=new PrintWriter("src/main/resources/dbData.txt");
-
     StudentDao studentDao=new StudentDao();
     ArrayList<Student> students=studentDao.getAllData();
 
-    for (Student student:students)
+    for (Student student : students) {
         printWriter.println(student);
-
+    }
     printWriter.flush();
     printWriter.close();
     }
 
     public void compressFile() throws IOException {
+
         FileInputStream fileInputStream=new FileInputStream("src/main/resources/dbData.txt");
         FileOutputStream fileOutputStream=new FileOutputStream("src/main/resources/compressedDbData.txt");
         DeflaterOutputStream deflaterOutputStream=new DeflaterOutputStream(fileOutputStream);
         int data;
-        while ((data=fileInputStream.read())!=-1)
-        {
+
+        while ((data=fileInputStream.read())!=-1) {
             deflaterOutputStream.write(data);
         }
         fileInputStream.close();

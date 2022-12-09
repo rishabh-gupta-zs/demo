@@ -20,23 +20,23 @@ public class StudentController {
         try {
             studentService.createStudentTable();
             studentService.createDepartmentTable();
-            studentService.mapDepartmentsToStudents();
             studentService.addMillionStudents();
+            studentService.mapDepartmentsToStudents();
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
+
         try {
             studentService.extractDbData();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException | SQLException e) {
+            logger.error(e.getMessage());
         }
 
         try {
             studentService.compressFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
         }
     }
 }
