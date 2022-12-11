@@ -2,7 +2,6 @@ package com.zs.assignment9.service;
 
 import com.zs.assignment9.dao.StudentDao;
 import com.zs.assignment9.model.Student;
-
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,40 +13,21 @@ public class StudentService {
         this.studentDao = new StudentDao();
     }
 
-    public void createStudentTable(){
+    public void createStudentTable() throws SQLException {
 
-        try {
-            studentDao.createStudentTable();
-        } catch (SQLException e) {
-            System.exit(0);
-        }
-
-
+        studentDao.createStudentTable();
     }
 
-    public Student createStudent(String firstName, String lastName){
+    public Student createStudent(String firstName, String lastName) throws SQLException {
 
         Student student=new Student(id.getAndIncrement(),firstName,lastName);
-        try {
-            studentDao.addStudent(student);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        studentDao.addStudent(student);
         return student;
-
     }
 
+    public Student getStudent(int id) throws SQLException {
 
-    public Student getStudent(int id){
-
-        Student student= null;
-        try {
-            student = studentDao.getStudent(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Student student= studentDao.getStudent(id);
         return student;
-
     }
-
 }
