@@ -30,15 +30,13 @@ public class GitLogController {
 
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
-            throw new RuntimeException(e);
 
         } catch (LogFileException e) {
             logger.error(e.getMessage());
-            throw new RuntimeException(e);
 
         } catch (ParseException e) {
             logger.error(e.getMessage());
-            throw new RuntimeException(e);
+
         }
 
         Date date=inputDate();
