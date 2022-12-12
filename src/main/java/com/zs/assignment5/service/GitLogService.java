@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class GitLogService {
 
-    private final static ArrayList<LogData> logDataList =new ArrayList<>();
+    private final ArrayList<LogData> logDataList =new ArrayList<>();
     private final SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM-yyyy");
 
     /**
