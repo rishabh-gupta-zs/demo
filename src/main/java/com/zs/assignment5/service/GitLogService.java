@@ -45,21 +45,21 @@ public class GitLogService {
             line=fileReader.nextLine();
 
             if(line.startsWith("Author:")){
-                author = line.split(" ")[1];
-                continue;
-            }
 
-            else if (line.startsWith("Date:")) {
+                author = line.split(" ")[1];
+                line=fileReader.nextLine();
+                if(!line.startsWith("Date:")){
+                    throw new LogFileException("Invalid format");
+                }
+
                 String[] splitDate=line.split(" ");
                 if(splitDate[4].equals("Sep"))    splitDate[4]="Sept";
                 String stringDate=splitDate[5]+"-"+splitDate[4]+"-"+splitDate[7];
                 commitDate= simpleDateFormat.parse(stringDate);
+
+                LogData logData=new LogData(author,commitDate);
+                logDataList.add(logData);
             }
-
-            else continue;
-
-            LogData logData=new LogData(author,commitDate);
-            logDataList.add(logData);
         }
     }
 

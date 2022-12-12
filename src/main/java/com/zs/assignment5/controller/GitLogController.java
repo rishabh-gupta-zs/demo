@@ -28,15 +28,9 @@ public class GitLogController {
         try {
             gitLogService.extractData();
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | ParseException | LogFileException e) {
             logger.error(e.getMessage());
-
-        } catch (LogFileException e) {
-            logger.error(e.getMessage());
-
-        } catch (ParseException e) {
-            logger.error(e.getMessage());
-
+            System.exit(0);
         }
 
         Date date=inputDate();
