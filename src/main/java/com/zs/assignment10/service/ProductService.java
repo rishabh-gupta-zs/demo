@@ -2,16 +2,17 @@ package com.zs.assignment10.service;
 
 
 import com.zs.assignment10.dao.ProductDao;
+import com.zs.assignment10.exception.ProductNotFoundException;
 import com.zs.assignment10.model.Product;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CrudService {
+public class ProductService {
 
     private ProductDao productDao;
 
-    public  CrudService() throws IOException {
+    public ProductService() throws IOException {
         productDao=new ProductDao();
     }
 
@@ -20,10 +21,10 @@ public class CrudService {
     }
 
     public List<Product> getAll() throws SQLException {
-        return productDao.getAll();
+        return productDao.getAllProducts();
     }
 
-    public Product getById(Integer id) throws SQLException {
+    public Product getById(Integer id) throws SQLException, ProductNotFoundException {
         return productDao.getById(id);
     }
 

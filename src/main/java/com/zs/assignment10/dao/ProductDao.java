@@ -1,5 +1,6 @@
 package com.zs.assignment10.dao;
 
+import com.zs.assignment10.exception.ProductNotFoundException;
 import com.zs.assignment10.model.Product;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class ProductDao {
     }
 
 
-    public List<Product> getAll() throws SQLException {
+    public List<Product> getAllProducts() throws SQLException {
 
         List<Product> productList = new ArrayList<>();
         final String query = "select * from Product";
@@ -63,7 +64,7 @@ public class ProductDao {
         return productList;
     }
 
-    public Product getById(Integer id) throws SQLException {
+    public Product getById(Integer id) throws SQLException, ProductNotFoundException {
 
         Product product = null;
         final String query = "select * from Product where id = "+id;
@@ -73,6 +74,9 @@ public class ProductDao {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
                 product = toProduct(resultSet);
+            }
+            else {
+                throw new ProductNotFoundException("Product with id="+id+" not found");
             }
         }
         return product;
@@ -94,7 +98,7 @@ public class ProductDao {
 
     public boolean insert(Product product) throws SQLException {
 
-        boolean inserted = false;
+        boolean inserted;
         final String query = "insert into Product(name,price) values (\'"+product.getName()+"\',"+product.getPrice()+")";
 
         try(Connection connection = DriverManager.getConnection(dbURL, user, password);
@@ -107,7 +111,7 @@ public class ProductDao {
     }
 
     public boolean update(Product product) throws SQLException {
-        boolean updated = false;
+        boolean updated;
         final String query = "update Product set name=\'"+product.getName()+"\', price="+product.getPrice()+" where id="+product.getId();
         try(Connection connection = DriverManager.getConnection(dbURL, user, password);
             Statement statement = connection.createStatement()) {

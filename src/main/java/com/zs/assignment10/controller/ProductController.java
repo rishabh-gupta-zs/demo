@@ -1,6 +1,7 @@
 package com.zs.assignment10.controller;
 
-import com.zs.assignment10.service.CrudService;
+import com.zs.assignment10.exception.ProductNotFoundException;
+import com.zs.assignment10.service.ProductService;
 import com.zs.assignment10.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,38 +10,39 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class CrudController {
+public class ProductController {
     public void run(){
 
-        Logger logger= LoggerFactory.getLogger(CrudController.class);
+        Logger logger= LoggerFactory.getLogger(ProductController.class);
         Scanner scanner=new Scanner(System.in);
-        CrudService crudService;
+        ProductService crudService;
         try {
-            crudService=new CrudService();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
+            crudService=new ProductService();
             crudService.createProductTable();
-        } catch (SQLException e) {
+        } catch (IOException | SQLException e) {
+            logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
         int input;
         do{
-            logger.info("\n1. getById\n2. getall\n3. insert\n4. update\n5. exists\n6. delete");
+            logger.info("\n1. get product by Id\n2. get all products\n3. insert product\n4. update product\n" +
+                    "5.check if product exists\n6. delete product");
             input=scanner.nextInt();
             switch (input){
 
                 case 1:
-                    logger.info("enter-id");
+                    logger.info("enter product id");
                     Product product= null;
                     try {
                         product = crudService.getById(scanner.nextInt());
 
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
+
+                    } catch (ProductNotFoundException e){
+                        logger.error(e.getMessage());
                     }
 
                     logger.info(product.toString());
@@ -52,6 +54,7 @@ public class CrudController {
                         products = crudService.getAll();
 
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
                     for (Product product1:products)
@@ -70,6 +73,7 @@ public class CrudController {
                     try {
                         inserted = crudService.insert(name,price);
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
 
@@ -96,6 +100,7 @@ public class CrudController {
                     try {
                         updated = crudService.update(id,name,price);
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
 
@@ -115,6 +120,7 @@ public class CrudController {
                     try {
                         exists = crudService.exists(name);
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
 
@@ -134,6 +140,7 @@ public class CrudController {
                     try {
                         deleted = crudService.delete(name);
                     } catch (SQLException e) {
+                        logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
 

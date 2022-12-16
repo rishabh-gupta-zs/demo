@@ -2,6 +2,7 @@ package com.zs.assignment10.service;
 
 
 import com.zs.assignment10.dao.ProductDao;
+import com.zs.assignment10.exception.ProductNotFoundException;
 import com.zs.assignment10.model.Product;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class CrudServiceTest {
@@ -22,85 +23,91 @@ class CrudServiceTest {
     private ProductDao productDao;
 
     @InjectMocks
-    private CrudService crudService;
+    private ProductService crudService;
 
     @Test
-    void getAll() {
+    void getAll() throws SQLException {
 
         List<Product> expectedProducts=new ArrayList<>();
         expectedProducts.add(new Product(1,"soap",20));
         expectedProducts.add(new Product(2,"iron",700));
 
-        try {
-            Mockito.when(productDao.getAll()).thenReturn(expectedProducts);
-            List<Product> actualProducts= null;
-            actualProducts = crudService.getAll();
-            assertEquals(expectedProducts,actualProducts);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Mockito.when(productDao.getAllProducts()).thenReturn(expectedProducts);
+        List<Product> actualProducts= null;
+        actualProducts = crudService.getAll();
+        assertEquals(expectedProducts,actualProducts);
     }
 
+
     @Test
-    void getById() {
+    void getById() throws SQLException, ProductNotFoundException {
 
         Product expectedProduct=new Product(1,"soap",20);
-        try {
-            Mockito.when(productDao.getById(1)).thenReturn(expectedProduct);
-            Product actualProduct=crudService.getById(1);
-            assertEquals(expectedProduct,actualProduct);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Mockito.when(productDao.getById(1)).thenReturn(expectedProduct);
+        Product actualProduct=crudService.getById(1);
+        assertEquals(expectedProduct,actualProduct);
     }
 
     @Test
-    void existsTrue() {
-        try {
-            Mockito.when(productDao.exists(Mockito.anyString())).thenReturn(true);
-            assertTrue(crudService.exists("soap"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    void getInvalidProduct() throws SQLException, ProductNotFoundException {
 
+        Mockito.when(productDao.getById(1)).thenThrow(ProductNotFoundException.class);
+        assertThrows(ProductNotFoundException.class,() -> crudService.getById(1));
     }
 
     @Test
-    void update() {
-        try {
-            Mockito.when(productDao.update(Mockito.any(Product.class))).thenReturn(true);
-            assertTrue(crudService.update(1,"pepsi",20));
+    void exists() throws SQLException {
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        Mockito.when(productDao.exists("soap")).thenReturn(true);
+        assertTrue(crudService.exists("soap"));
     }
 
     @Test
-    void insert() {
-        try {
-            Mockito.when(productDao.insert(Mockito.any(Product.class))).thenReturn(true);
-            assertTrue(crudService.insert("pepsi",20));
+    void notExists() throws SQLException {
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        Mockito.when(productDao.exists("soap")).thenReturn(false);
+        assertFalse(crudService.exists("soap"));
     }
 
     @Test
-    void delete() {
-        try {
-            Mockito.when(productDao.delete("ParleG")).thenReturn(true);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            assertTrue(crudService.delete("ParleG"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    void update() throws SQLException {
+
+        Mockito.when(productDao.update(Mockito.any(Product.class))).thenReturn(true);
+        assertTrue(crudService.update(1,"pepsi",20));
+    }
+
+    @Test
+    void updateFail() throws SQLException {
+
+        Mockito.when(productDao.update(Mockito.any(Product.class))).thenReturn(false);
+        assertFalse(crudService.update(1,"pepsi",20));
+    }
+
+    @Test
+    void insert() throws SQLException {
+
+        Mockito.when(productDao.insert(Mockito.any(Product.class))).thenReturn(true);
+        assertTrue(crudService.insert("pepsi",20));
+    }
+
+    @Test
+    void insertionFail() throws SQLException {
+
+        Mockito.when(productDao.insert(Mockito.any(Product.class))).thenReturn(false);
+        assertFalse(crudService.insert("pepsi",20));
+    }
+
+    @Test
+    void delete() throws SQLException {
+
+        Mockito.when(productDao.delete("ParleG")).thenReturn(true);
+        assertTrue(crudService.delete("ParleG"));
+    }
+
+    @Test
+    void deletionFail() throws SQLException {
+
+        Mockito.when(productDao.delete("ParleG")).thenReturn(false);
+        assertFalse(crudService.delete("ParleG"));
     }
 }
