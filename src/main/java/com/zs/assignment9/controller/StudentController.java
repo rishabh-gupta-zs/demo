@@ -1,5 +1,7 @@
 package com.zs.assignment9.controller;
 
+import com.zs.assignment9.exception.InvalidNameExcetion;
+import com.zs.assignment9.exception.StudentNotFoundException;
 import com.zs.assignment9.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +16,10 @@ public class StudentController {
 
         try {
             studentService.createStudentTable();
-            studentService.createStudent("student","name");
-            studentService.getStudent(1);
+            studentService.createStudent("first name","last name");
+            logger.info(studentService.getStudent(7).toString());
 
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidNameExcetion | StudentNotFoundException e) {
             logger.error(e.getMessage());
         }
     }

@@ -1,17 +1,18 @@
 package com.zs.assignment9.dao;
 
+import com.zs.assignment9.exception.StudentNotFoundException;
 import com.zs.assignment9.model.Student;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class StudentDao {
 
     private final String DB_URL = "jdbc:postgresql://localhost:2006/mydb1";
     private final String USER = "postgres";
     private final String PASSWORD = "root123";
-
-    private final List<Student> students = new ArrayList<Student>();
 
     public void createStudentTable() throws SQLException {
 
@@ -29,20 +30,19 @@ public class StudentDao {
 
     public Student addStudent(Student student) throws SQLException {
 
-
         String value = "(\'" + student.getFirstName() + "\',\'" + student.getLastName() + "\')";
         String query = "insert into student(first_name, last_name) values "+value;
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
 
-            statement.executeUpdate(query);
+             statement.executeUpdate(query);
         }
 
         return student;
     }
 
-    public Student getStudent(int id) throws SQLException {
+    public Student getStudent(int id) throws SQLException, StudentNotFoundException {
 
         final String query = "select * from student where id = " + id;
         Student student = new Student();
@@ -55,7 +55,9 @@ public class StudentDao {
                 student.setId(resultSet.getInt("id"));
                 student.setFirstName(resultSet.getString("first_name"));
                 student.setLastName(resultSet.getString("last_name"));
-
+            }
+            else {
+                throw new StudentNotFoundException("student with id="+id+" is not exists");
             }
         }
         return student;

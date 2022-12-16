@@ -1,12 +1,12 @@
 package com.zs.assignment9.service;
 
 import com.zs.assignment9.dao.StudentDao;
+import com.zs.assignment9.exception.InvalidNameExcetion;
+import com.zs.assignment9.exception.StudentNotFoundException;
 import com.zs.assignment9.model.Student;
 import java.sql.SQLException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class StudentService {
-    private AtomicInteger id = new AtomicInteger();
     private StudentDao studentDao;
 
     public StudentService() {
@@ -18,14 +18,19 @@ public class StudentService {
         studentDao.createStudentTable();
     }
 
-    public Student createStudent(String firstName, String lastName) throws SQLException {
+    public Student createStudent(String firstName, String lastName) throws SQLException, InvalidNameExcetion {
 
-        Student student=new Student(id.getAndIncrement(),firstName,lastName);
+        if (firstName==null || firstName.length()==0){
+            throw new InvalidNameExcetion("invalid first name");
+        }
+        Student student=new Student(firstName,lastName);
         studentDao.addStudent(student);
         return student;
+
+
     }
 
-    public Student getStudent(int id) throws SQLException {
+    public Student getStudent(int id) throws SQLException, StudentNotFoundException {
 
         Student student= studentDao.getStudent(id);
         return student;
